@@ -8,4 +8,6 @@ public interface RoomInfoService {
     List<RoomInfoDTO> getAllRoomInfo();
 
     String addRoomInfo(RoomInfoDTO roomInfoDTO);
+
+    List<RoomInfoDTO> getAllRoomsInfoByFloorNumber(Integer floorNumber);
 }

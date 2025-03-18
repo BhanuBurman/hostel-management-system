@@ -17,7 +17,7 @@ public class RoomInfoServiceImpl implements RoomInfoService {
     @Override
     public List<RoomInfoDTO> getAllRoomInfo(){
         List<RoomEntity> roomEntities = roomInfoRepository.findAll();
-        return roomEntities.stream().map(roomEntity -> new RoomInfoDTO(roomEntity.getRoomNumber(), roomEntity.getRoomTypeId(), roomEntity.getTotalBeds(), roomEntity.getAvailableBeds(), roomEntity.getOccupied_beds())).toList();
+        return roomEntities.stream().map(roomEntity -> new RoomInfoDTO(roomEntity.getRoomId(),roomEntity.getRoomNumber(), roomEntity.getRoomTypeId(), roomEntity.getTotalBeds(), roomEntity.getAvailableBeds(), roomEntity.getFloorNumber(), roomEntity.getOccupiedBeds())).toList();
     }
 
     @Override
@@ -26,9 +26,20 @@ public class RoomInfoServiceImpl implements RoomInfoService {
         roomEntity.setRoomNumber(roomInfoDTO.getRoomNumber());
         roomEntity.setRoomTypeId(roomInfoDTO.getRoomTypeId());
         roomEntity.setAvailableBeds(roomInfoDTO.getAvailableBeds());
-        roomEntity.setOccupied_beds(roomInfoDTO.getOccupiedBeds());
+        roomEntity.setOccupiedBeds(roomInfoDTO.getOccupiedBeds());
         roomEntity.setTotalBeds(roomInfoDTO.getTotalBeds());
+        roomEntity.setFloorNumber(roomInfoDTO.getFloorNumber());
         roomInfoRepository.save(roomEntity);
         return "Successfully stored room information";
     }
+
+    @Override
+    public List<RoomInfoDTO> getAllRoomsInfoByFloorNumber(Integer floorNumber) {
+        List<RoomEntity> roomEntities = roomInfoRepository.findByFloorNumber(floorNumber);
+        return roomEntities.stream().map(roomEntity -> new RoomInfoDTO(roomEntity.getRoomId(),roomEntity.getRoomNumber(), roomEntity.getRoomTypeId(), roomEntity.getTotalBeds(), roomEntity.getAvailableBeds(), roomEntity.getFloorNumber(), roomEntity.getOccupiedBeds())).toList();
+    }
+
+
+
+
 }

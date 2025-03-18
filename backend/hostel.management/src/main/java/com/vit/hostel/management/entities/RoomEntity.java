@@ -28,5 +28,7 @@ public class RoomEntity {
     @Column(name = "available_beds")
     private Integer availableBeds;
     @Column(name = "occupied_beds")
-    private Integer occupied_beds;
+    private Integer occupiedBeds;
+    @Column(name = "floor_number")
+    private Integer floorNumber;
 }
