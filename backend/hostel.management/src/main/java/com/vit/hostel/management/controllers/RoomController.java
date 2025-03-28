@@ -24,12 +24,23 @@ public class RoomController {
     }
 
     @GetMapping("/get-rooms-by-floor-number/{floorNumber}")
-    public ResponseEntity<List<RoomInfoDTO>> getRoomsByFloorNumber(@PathParam("floorNumber") Integer floorNumber){
+    public ResponseEntity<List<RoomInfoDTO>> getRoomsByFloorNumber(@PathVariable("floorNumber") Integer floorNumber){
         return ResponseEntity.ok(roomInfoService.getAllRoomsInfoByFloorNumber(floorNumber));
     }
+
+    @GetMapping("/get-total-floors")
+    public ResponseEntity<Integer> getTotalFloors(){
+        return ResponseEntity.ok(roomInfoService.getTotalFloors());
+    }
+
 
     @PostMapping("/add-room-info")
     public ResponseEntity<String> addRoomInfo(@RequestBody RoomInfoDTO roomInfoDTO){
         return ResponseEntity.ok(roomInfoService.addRoomInfo(roomInfoDTO));
+    }
+
+    @PostMapping("/add-multiple-rooms-info")
+    public ResponseEntity<String> addMultiRoomInfo(@RequestBody List<RoomInfoDTO> roomInfoDTOList){
+        return ResponseEntity.ok(roomInfoService.addMultiRoomInfo(roomInfoDTOList));
     }
 }

@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Room from "../assets/room_img.jpg";
+import { useLocation } from "react-router-dom";
 
 const CreateRoomType = () => {
+  const location = useLocation();
+  const roomObj = location.state?.roomsTypeId || -1;
+
+  console.log(roomObj);
+
   const [isCreateTab, setIsCreateTab] = useState(true);
   const [imageUrl, setImageUrl] = useState("");
   const [imageFile, setImageFile] = useState(null);
@@ -23,32 +29,42 @@ const CreateRoomType = () => {
   const [roomData, setRoomData] = useState({
     isAC: false,
     noOfBeds: "0",
-    noOfFans: "0",
-    noOfLights: "0",
-    noOfTables: "0",
-    noOfAlmira: "0",
-    noOfChairs: "0",
-    price: "0",
-    image: "",
+    noOfFans:  "0",
+    noOfLights:  "0",
+    noOfTables:  "0",
+    noOfAlmira:  "0",
+    noOfChairs:  "0",
+    price:  "0",
+    image:"",
   });
 
-  useEffect(() =>{
+  useEffect(() => {
     fetchRoomTypes();
-  },[]);
+  }, []);
 
-  const fetchRoomTypes =  () =>{
+  const fetchRoomTypes = () => {
     // try{
     //   const response = await fetch("http://localhost:8080/api/get-all-room-types");
     //   const json = await response.json();
     //   console.log(json);
-    //   setAllRoomTypeList(json); 
+    //   setAllRoomTypeList(json);
     // }catch(e){
     //   console.log(e);
     // }
-    axios.get("http://localhost:8080/room-types/get-all-room-types").then((response) =>{
-      setAllRoomTypeList(response.data);
-    }).catch((err) => console.log(err))
-  }
+    axios
+      .get("http://localhost:8080/room-types/get-all-room-types")
+      .then((response) => {
+        setAllRoomTypeList(response.data);
+        if (roomObj !== -1) {
+          const foundRoom = response.data.find((item) => item.id === roomObj);
+          console.log(foundRoom);
+          if (foundRoom) {
+            setRoomData(foundRoom);
+          }
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -66,7 +82,7 @@ const CreateRoomType = () => {
           "Content-Type": "application/json",
         },
       })
-      .then( (response) => {
+      .then((response) => {
         console.log(response);
         alert("Room Type Created Successfully");
       })
@@ -108,8 +124,8 @@ const CreateRoomType = () => {
   };
 
   return (
-    <div className="room__type h-screen w-full flex justify-center">
-      <div className="room__info w-5xl rounded-lg shadow-2xl p-10">
+    <div className="room__type h-full w-full flex justify-center bg-gray-100 p-10">
+      <div className="room__info w-5xl rounded-lg shadow-2xl p-10 bg-white">
         <div className="tab_switch">
           <button
             className={`tab_buttons p-2 px-5 cursor-pointer ${
@@ -130,7 +146,7 @@ const CreateRoomType = () => {
         </div>
         {/* Create room Type  */}
         {isCreateTab && (
-          <form className="flex justify-between" onSubmit={handleSubmit}>
+          <form className="flex justify-between " onSubmit={handleSubmit}>
             <div className="flex flex-col justify-center items-center p-10 space-y-4">
               {/* ✅ Fixed Radio Button Implementation */}
               <div className="flex justify-between w-full items-start">
@@ -220,30 +236,51 @@ const CreateRoomType = () => {
                   key={index}
                   className="flex items-center space-x-4 shadow-2xl border-1 border-gray-400 shadow-amber-50 rounded-md h-25 bg-gray-200 mb-5 px-3"
                 >
-                  <img
-                    className="w-20 h-20 rounded-full object-cover "
-                    src={item.image}
-                    alt="Room"
-                  />
-                    <p className="text-2xl textblack flex items-center font-semibold w-35">
-                      {item.isAC ? "AC" : "Non-AC"}
-                    </p>
+                  {item.image ? (
+                    <img
+                      className="w-20 h-20 rounded-full object-cover"
+                      src={item.image}
+                      alt="Room"
+                    />
+                  ) : (
+                    <img
+                      className="w-20 h-20 rounded-full object-cover"
+                      src={Room} // Your default imported image
+                      alt="Default Room"
+                    />
+                  )}
+                  <p className="text-2xl textblack flex items-center font-semibold w-35">
+                    {item.isAC ? "AC" : "Non-AC"}
+                  </p>
                   <div className="flex w-full justify-between ">
                     <div className="text-sm text-gray-500 max-w-2xl">
                       <span className="underline">Accesories:</span>
                       <span className="flex">
                         {Object.keys(item)
-                          .filter((key) => item[key] !== 0 && key !== "isAC" && key !== "price" && key !== "image" && key !== "id") // Filter keys whose value is zero
+                          .filter(
+                            (key) =>
+                              item[key] !== 0 &&
+                              key !== "isAC" &&
+                              key !== "price" &&
+                              key !== "image" &&
+                              key !== "id"
+                          ) // Filter keys whose value is zero
                           .map((key) => (
-                            <div key={key} className="mr-1">{key.replace("noOf", "")} : {item[key]},</div> 
+                            <div key={key} className="mr-1">
+                              {key.replace("noOf", "")} : {item[key]},
+                            </div>
                           ))}
                       </span>
                     </div>
                     <div className="price flex flex-col items-center justify-start">
                       <p className="text-2xl font-semibold ">{item.price} </p>
-                      <span className="text-gray-500 ml-2 text-sm">Rs/month</span>
+                      <span className="text-gray-500 ml-2 text-sm">
+                        Rs/month
+                      </span>
                     </div>
-                    <div className="edit_button flex items-center text-2xl font-semibold px-5 rounded-md bg-green-500">Edit</div>
+                    <div className="edit_button flex items-center text-2xl font-semibold px-5 rounded-md bg-green-500">
+                      Edit
+                    </div>
                   </div>
                 </div>
               );

@@ -39,7 +39,16 @@ public class RoomInfoServiceImpl implements RoomInfoService {
         return roomEntities.stream().map(roomEntity -> new RoomInfoDTO(roomEntity.getRoomId(),roomEntity.getRoomNumber(), roomEntity.getRoomTypeId(), roomEntity.getTotalBeds(), roomEntity.getAvailableBeds(), roomEntity.getFloorNumber(), roomEntity.getOccupiedBeds())).toList();
     }
 
+    @Override
+    public Integer getTotalFloors() {
+        return roomInfoRepository.findDistinctFloorNumbers();
+    }
 
+    @Override
+    public String addMultiRoomInfo(List<RoomInfoDTO> roomInfoDTOList) {
+        roomInfoDTOList.forEach(this::addRoomInfo);
+        return "Successfully stored room information";
+    }
 
 
 }
