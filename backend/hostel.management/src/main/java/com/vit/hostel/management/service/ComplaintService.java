@@ -1,13 +1,18 @@
 package com.vit.hostel.management.service;
 
 
-import com.vit.hostel.management.dtos.ComplaintCategoryDTO;
-import com.vit.hostel.management.dtos.ComplaintSubCategoryDTO;
+import com.vit.hostel.management.dtos.complainDtos.*;
 
 import java.util.List;
 
 public interface ComplaintService {
-    public List<ComplaintCategoryDTO> getAllComplaintCategories();
+    List<ComplaintCategoryDTO> getAllComplaintCategories();
 
     List<ComplaintSubCategoryDTO> getAllComplaintSubCategories();
+
+    String addComplaint(ComplaintRequestDTO complaintRequestDTO);
+
+    List<ComplaintResponseDTO> getAllComplaints();
+
+    ComplainDetailDTO getComplainDetailsByID(Integer complainId);
 }

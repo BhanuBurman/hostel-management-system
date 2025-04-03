@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ComplaintSubCategoryRepository extends JpaRepository<ComplaintSubCategoryEntity, Integer> {
     List<ComplaintSubCategoryEntity> findAllByOrderBySubCategoryId();
+    ComplaintSubCategoryEntity findBySubCategoryId(Integer subCategoryId);
 }

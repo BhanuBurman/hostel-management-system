@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Room from "../assets/room_img.jpg";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CreateComplaint from "../components/CreateComplaint";
-
+import { RiArrowDropDownLine } from "react-icons/ri";
 const ComplainPage = () => {
   const location = useLocation();
   const roomObj = location.state?.roomsTypeId || -1;
 
-  console.log(roomObj);
-    const [newComplaintClicked, setNewComplaintClicked] = useState(false);
+  // console.log(roomObj);
+
+  const navigate = useNavigate();
+  const [status, setStatus] = useState("Pending");
+  const [newComplaintClicked, setNewComplaintClicked] = useState(false);
   const [isCreateTab, setIsCreateTab] = useState(true);
   const [imageUrl, setImageUrl] = useState("");
   const [imageFile, setImageFile] = useState(null);
+
+  const [complaintList, setComplaintList] = useState([]);
+
   const [allRoomTypeList, setAllRoomTypeList] = useState([
     // {
     //   id: 0,
@@ -29,7 +35,17 @@ const ComplainPage = () => {
   ]);
   useEffect(() => {
     fetchRoomTypes();
+    fetchCompains();
   }, []);
+
+  const fetchCompains = () => {
+    axios
+      .get("http://localhost:8080/complain/get-all-complaints")
+      .then((response) => {
+        setComplaintList(response.data);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const fetchRoomTypes = () => {
     // try{
@@ -55,40 +71,17 @@ const ComplainPage = () => {
       .catch((err) => console.log(err));
   };
 
-  const complaints = [
-    {
-      id: 101,
-      category: "Infrastructure Issues",
-      subcategory: "Fan Damage",
-      priority: "High",
-      status: "Pending",
-      date: "2025-03-26",
-    },
-    {
-      id: 102,
-      category: "Security",
-      subcategory: "Unauthorized Entry",
-      priority: "Urgent",
-      status: "In Progress",
-      date: "2025-03-25",
-    },
-    {
-      id: 103,
-      category: "Food & Mess",
-      subcategory: "Food Quality",
-      priority: "Medium",
-      status: "Resolved",
-      date: "2025-03-24",
-    },
-  ];
+  const handleViewDetails = (complaintId) => {
+    navigate("/complain-detail-page", {
+      state: { complaintId: complaintId },
+    });
+  };
 
   return (
     <div className="room__type h-screen w-full flex flex-col  justify-start bg-gray-100 p-10 px-50">
-        { newComplaintClicked && 
-            <CreateComplaint 
-            onClose={() => setNewComplaintClicked(false)}
-            />
-        }
+      {newComplaintClicked && (
+        <CreateComplaint onClose={() => setNewComplaintClicked(false)} />
+      )}
       <div className="w-full mb-5">
         <div className="heading text-3xl font-bold">Complain Section</div>
         <p>
@@ -121,8 +114,9 @@ const ComplainPage = () => {
           </button>
         </div>
 
-        <button className="complain_button p-1 text-md px-2 rounded-md transition-all hover:scale-105 bg-gray-700 text-white cursor-pointer hover:bg-black"
-        onClick={() => setNewComplaintClicked(true)}
+        <button
+          className="complain_button p-1 text-md px-2 rounded-md transition-all hover:scale-105 bg-gray-700 text-white cursor-pointer hover:bg-black"
+          onClick={() => setNewComplaintClicked(true)}
         >
           New Complain
         </button>
@@ -130,30 +124,32 @@ const ComplainPage = () => {
       <div className="room__info w-full shadow-2xl p-5 bg-white rounded-br-lg rounded-bl-lg">
         {/* Create room Type  */}
         {isCreateTab && (
-        //   <div className="p-6 bg-gray-100 min-h-screen bg-red-600">
-              <div className="overflow-auto ">
-                <table className="min-w-full bg-white border border-gray-200 rounded-lg">
-                  <thead className="bg-gray-200">
-                    <tr>
-                      <th className="px-4 py-3 text-left">ID</th>
-                      <th className="px-4 py-3 text-left">Category</th>
-                      <th className="px-4 py-3 text-left">Subcategory</th>
-                      <th className="px-4 py-3 text-left">Priority</th>
-                      <th className="px-4 py-3 text-left">Status</th>
-                      <th className="px-4 py-3 text-left">Date</th>
-                      <th className="px-4 py-3 text-left">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {complaints.map((complaint) => (
-                      <tr
-                        key={complaint.id}
-                        className="border-t border-gray-200"
-                      >
-                        <td className="px-4 py-3">{complaint.id}</td>
-                        <td className="px-4 py-3">{complaint.category}</td>
-                        <td className="px-4 py-3">{complaint.subcategory}</td>
-                        <td className="px-4 py-3">
+          //   <div className="p-6 bg-gray-100 min-h-screen bg-red-600">
+          <div className="overflow-auto ">
+            <table className="min-w-full bg-white border border-gray-200 rounded-lg">
+              <thead className="bg-gray-200">
+                <tr>
+                  <th className="px-4 py-3 text-left">ID</th>
+                  <th className="px-4 py-3 text-left">Category</th>
+                  <th className="px-4 py-3 text-left">Subcategory</th>
+                  {/* <th className="px-4 py-3 text-left">Priority</th> */}
+                  <th className="px-4 py-3 text-left">Status</th>
+                  <th className="px-4 py-3 text-left">Date</th>
+                  <th className="px-4 py-3 text-left">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {complaintList.map((complaint) => (
+                  <tr
+                    key={complaint.complaintId}
+                    className="border-t border-gray-200"
+                  >
+                    <td className="px-4 py-3">{complaint.complaintId}</td>
+                    <td className="px-4 py-3">{complaint.categoryName}</td>
+                    <td className="px-4 py-3">{complaint.subcategoryName}</td>
+                    {/* <td className="px-4 py-3">{complaint.category}</td>
+                        <td className="px-4 py-3">{complaint.subcategory}</td> */}
+                    {/* <td className="px-4 py-3">
                           <span
                             className={`px-2 py-1 text-sm font-semibold rounded ${
                               complaint.priority === "Urgent"
@@ -165,35 +161,41 @@ const ComplainPage = () => {
                           >
                             {complaint.priority}
                           </span>
-                        </td>
-                        <td className="px-4 py-3">
-                          <span
-                            className={`px-2 py-1 text-sm font-semibold rounded ${
-                              complaint.status === "Pending"
-                                ? "bg-red-500 text-white"
-                                : complaint.status === "In Progress"
-                                ? "bg-yellow-500 text-white"
-                                : "bg-green-500 text-white"
-                            }`}
-                          >
-                            {complaint.status}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3">{complaint.date}</td>
-                        <td className="px-4 py-3">
-                          <button className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 mr-2">
-                            View
-                          </button>
-                          <button className="px-3 py-1 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
-                            Edit
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            // </div>
+                        </td> */}
+                    <td className="px-4 py-3 flex">
+                      <select
+                        className={`pl-2 py-1 text-sm font-semibold rounded flex  ${
+                          complaint.status === "Pending"
+                            ? "bg-red-500 text-white"
+                            : complaint.status === "In Progress"
+                            ? "bg-yellow-500 text-white"
+                            : "bg-green-500 text-white"
+                        }`}
+                        value={status}
+                      >
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                      </select>
+                    </td>
+                    <td className="px-4 py-3">{complaint.submittedAt}</td>
+                    <td className="px-4 py-3">
+                      <button
+                        className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 mr-2"
+                        onClick={() => handleViewDetails(complaint.complaintId)}
+                      >
+                        View
+                      </button>
+                      {/* <button className="px-3 py-1 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
+                        Edit
+                      </button> */}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          // </div>
         )}
         {/*List of all the room types added */}
         {!isCreateTab && (

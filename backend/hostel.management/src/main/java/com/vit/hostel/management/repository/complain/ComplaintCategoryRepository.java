@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface ComplaintCategoryRepository extends JpaRepository<ComplaintCategoryEntity, Integer> {
     List<ComplaintCategoryEntity> findAllByOrderByCategoryId();
+    ComplaintCategoryEntity findByCategoryId(Integer categoryId);
 }

@@ -1,7 +1,6 @@
 package com.vit.hostel.management.controllers;
 
-import com.vit.hostel.management.dtos.ComplaintCategoryDTO;
-import com.vit.hostel.management.dtos.ComplaintSubCategoryDTO;
+import com.vit.hostel.management.dtos.complainDtos.*;
 import com.vit.hostel.management.service.ComplaintService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -27,4 +26,20 @@ public class ComplaintController {
     public ResponseEntity<List<ComplaintSubCategoryDTO>> getAllComplaintSubCategory(){
         return ResponseEntity.ok(complaintService.getAllComplaintSubCategories());
     }
+
+    @GetMapping("/get-all-complaints")
+    public ResponseEntity<List<ComplaintResponseDTO>> getAllComplaints(){
+        return ResponseEntity.ok(complaintService.getAllComplaints());
+    }
+
+    @GetMapping("/get-complain-detailsById/{complainId}")
+    public ResponseEntity<ComplainDetailDTO> getComplainDetailsByID(@PathVariable Integer complainId){
+        return ResponseEntity.ok(complaintService.getComplainDetailsByID(complainId));
+    }
+
+    @PostMapping("/add-complaint")
+    public ResponseEntity<String> addComplaint(@RequestBody ComplaintRequestDTO complaintRequestDTO){
+        return ResponseEntity.ok(complaintService.addComplaint(complaintRequestDTO));
+    }
+
 }
