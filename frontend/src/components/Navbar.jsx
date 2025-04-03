@@ -5,6 +5,11 @@ import Register from "./Register";
 
 const Navbar = () => {
   const [isRegisterClicked, setIsRegisterClicked] = useState(false);
+
+  const handleScroll = (id) =>{
+    document.getElementById(id).scrollIntoView({behavior: 'smooth'})
+  }
+
   return (
     <div className="nav__bar container flex  justify-between p-5 ">
       {isRegisterClicked && (
@@ -21,10 +26,8 @@ const Navbar = () => {
         <NavLink className="mx-5" to={"/complain-page"}>
           Complain
         </NavLink>
-        <NavLink className="mx-5" to={"/"}>About</NavLink>
-        <NavLink className="mx-5" to={"/"}>
-          Contact us
-        </NavLink>
+        <li className="mx-5 cursor-pointer" onClick={() => handleScroll("about")}>About us</li>
+        <li className="mx-5 cursor-pointer" onClick={() => handleScroll("contact")}>Contact us</li>
       </ul>
       <div className="buttons">
         <button className="login px-3 mx-1">Login</button>
