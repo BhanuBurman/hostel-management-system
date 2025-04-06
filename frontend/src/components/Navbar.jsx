@@ -26,6 +26,9 @@ const Navbar = () => {
         <NavLink className="mx-5" to={"/complain-page"}>
           Complain
         </NavLink>
+        <NavLink className="mx-5" to={"/food-menu"}>
+          Food Menu
+        </NavLink>
         <li className="mx-5 cursor-pointer" onClick={() => handleScroll("about")}>About us</li>
         <li className="mx-5 cursor-pointer" onClick={() => handleScroll("contact")}>Contact us</li>
       </ul>
