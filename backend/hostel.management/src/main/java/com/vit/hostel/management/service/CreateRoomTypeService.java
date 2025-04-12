@@ -9,4 +9,6 @@ public interface CreateRoomTypeService {
     List<RoomTypeDTO> getAllRoomTypes();
 
     String addRoomType(RoomTypeDTO roomTypeDTO);
+
+    RoomTypeDTO getRoomTypeById(Integer roomTypeId);
 }

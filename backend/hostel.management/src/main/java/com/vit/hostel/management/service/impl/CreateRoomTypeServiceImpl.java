@@ -55,4 +55,21 @@ public class CreateRoomTypeServiceImpl implements CreateRoomTypeService {
         createRoomTypeRepository.save(roomTypeEntity);
         return "Room Type Added Successfully";
     }
+
+    @Override
+    public RoomTypeDTO getRoomTypeById(Integer roomTypeId) {
+        RoomTypeEntity roomTypeEntity = createRoomTypeRepository.findById(roomTypeId).orElseThrow();
+        return RoomTypeDTO.builder()
+                .id(roomTypeEntity.getRoomTypeId())
+                .isAC(roomTypeEntity.getIsAC())
+                .image(roomTypeEntity.getImage())
+                .price(roomTypeEntity.getPrice())
+                .noOfAlmira(roomTypeEntity.getNoOfAlmira())
+                .noOfBeds(roomTypeEntity.getNoOfBeds())
+                .noOfChairs(roomTypeEntity.getNoOfChairs())
+                .noOfFans(roomTypeEntity.getNoOfFans())
+                .noOfLights(roomTypeEntity.getNoOfLights())
+                .noOfTables(roomTypeEntity.getNoOfTables())
+                .build();
+    }
 }

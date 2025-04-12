@@ -3,7 +3,7 @@ package com.vit.hostel.management.enums;
 import lombok.Getter;
 
 @Getter
-public enum MealType {
+public enum MealType implements PersistableEnum {
     BREAKFAST("Breakfast"),
     LUNCH("Lunch"),
     SNACKS("Snacks"),
@@ -15,13 +15,9 @@ public enum MealType {
         this.mealType = mealType;
     }
 
-    public static MealType fromString(String value) {
-        for (MealType type : values()) {
-            if (type.mealType.equalsIgnoreCase(value)) {
-                return type;
-            }
-        }
-        throw new IllegalArgumentException("Invalid meal type: " + value);
+    @Override
+    public String getValue() {
+        return mealType;
     }
 }
 

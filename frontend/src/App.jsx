@@ -9,6 +9,7 @@ import AboutUs from "./components/AboutUs";
 import ContactUs from "./components/ContactUs";
 import Footer from "./components/Footer";
 import FoodMenuPage from "./pages/FoodMenuPage";
+import RoomViewPage from "./pages/RoomViewPage";
 function App() {
   
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/complain-page" element={<ComplainPage />} />
         <Route path="/complain-detail-page" element={<ComplainDetailPage />} />
         <Route path="/food-menu" element={<FoodMenuPage />} />
+        <Route path="/room-view" element={<RoomViewPage />} />
       </Routes>
     </BrowserRouter>
   );

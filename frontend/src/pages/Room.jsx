@@ -105,9 +105,10 @@ const Room = () => {
   
   const handleCreateRoomNavigation = (index) =>{
     const state = {
-      roomsTypeId:roomsInfoList[index].roomTypeId
+      roomNumber: roomsInfoList[index].roomNumber,
+      roomTypeId:roomsInfoList[index].roomTypeId
     }
-    navigation("/create-room-type", {state})
+    navigation("/room-view", {state})
   }
 
 

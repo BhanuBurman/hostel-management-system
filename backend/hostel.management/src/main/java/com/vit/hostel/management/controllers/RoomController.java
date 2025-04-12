@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/room")
 @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS})
+@Tag(name="Rooms", description = "This API contains operations related to rooms section")
 public class RoomController {
     private final RoomInfoService roomInfoService;
     public RoomController(RoomInfoService roomInfoService){
