@@ -1,8 +1,16 @@
 package com.vit.hostel.management.dtos;
 
+import lombok.*;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class StudentDTO {
-    private String studentId;
     private String studentName;
+    private String password;
+
     private String regNumber;
     private String studentEmail;
     private String studentPhone;

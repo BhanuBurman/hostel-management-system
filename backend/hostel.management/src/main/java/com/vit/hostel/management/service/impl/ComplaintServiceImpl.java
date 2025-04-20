@@ -1,7 +1,7 @@
 package com.vit.hostel.management.service.impl;
 
 import com.vit.hostel.management.dtos.complainDtos.*;
-import com.vit.hostel.management.entities.StudentEntity;
+import com.vit.hostel.management.entities.StudentInfoEntity;
 import com.vit.hostel.management.entities.complain.ComplaintCategoryEntity;
 import com.vit.hostel.management.entities.complain.ComplaintEntity;
 import com.vit.hostel.management.entities.complain.ComplaintSubCategoryEntity;
@@ -87,7 +87,7 @@ public class ComplaintServiceImpl implements ComplaintService {
     @Override
     public ComplainDetailDTO getComplainDetailsByID(Integer complainId) {
         ComplaintEntity complaint = complaintRepository.findById(complainId).orElseThrow();
-        StudentEntity student = studentRepository.findById(complaint.getStudentId()).orElseThrow();
+        StudentInfoEntity student = studentRepository.findById(complaint.getStudentId()).orElseThrow();
         ComplaintCategoryEntity category = complaintCategoryRepository.findByCategoryId(complaint.getCategoryId());
         ComplaintSubCategoryEntity subCategory = complaintSubCategoryRepository.findBySubCategoryId(complaint.getSubCategoryId());
         return ComplainDetailDTO.builder()

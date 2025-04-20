@@ -1,7 +1,13 @@
 package com.vit.hostel.management.entities;
 
+import com.vit.hostel.management.enums.RoleTypeName;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "role_types")
@@ -17,5 +23,8 @@ public class RoleType {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role_name")
-    private RoleName roleName;
+    private RoleTypeName roleName;
+
+//    @ManyToMany(mappedBy = "roles")
+//    private List<StudentEntity> users;
 }

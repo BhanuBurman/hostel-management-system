@@ -1,54 +1,24 @@
 package com.vit.hostel.management.entities;
 
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Date;
-import java.time.Year;
-
+@Entity
+@Table(name = "students")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @Builder
-@Table(name = "students")
 public class StudentEntity {
     @Id
-    @Column(name = "student_id")
-    private Integer studentId;
+    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer userId;
 
-    @Column(name = "name")
-    private String studentName;
-
-    @Column(name = "email")
-    private String studentEmail;
-
-    @Column(name = "phone")
-    private String phoneNo;
-
-    @Column(name = "room_number")
-    private String roomNumber;
-
-    @Column(name = "reg_number")
+    @Column(name = "reg_number", unique = true)
     private String regNumber;
 
-    @Column(name = "address")
-    private String address;
-
-    @Column(name = "gender")
-    private String gender;
-
-    @Column(name = "dob")
-    private Date dob;
-
-    @Column(name = "branch")
-    private String branch;
-
-    @Column(name = "admission_year")
-    private Year admissionYear;
+    @Column(name = "password")
+    private String password;
 }

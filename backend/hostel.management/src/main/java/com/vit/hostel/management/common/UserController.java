@@ -8,6 +8,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("")
 public class UserController {
-//    @GetMapping("/getUserByRegNumber")
-//    public ResponseEntity<User> getUserByNumber()
+
 }
