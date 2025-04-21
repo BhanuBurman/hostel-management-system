@@ -8,6 +8,7 @@ import com.vit.hostel.management.entities.StudentEntity;
 import com.vit.hostel.management.repository.StudentRepository;
 import com.vit.hostel.management.repository.UserRepository;
 import com.vit.hostel.management.service.AuthService;
+import com.vit.hostel.management.service.JwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,11 +24,13 @@ public class AuthServiceImpl implements AuthService {
     private final StudentRepository studentRepository;
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
-    AuthServiceImpl(StudentRepository studentRepository, UserRepository userRepository, AuthenticationManager authenticationManager){
+    AuthServiceImpl(StudentRepository studentRepository, UserRepository userRepository, AuthenticationManager authenticationManager, JwtService jwtService){
         this.studentRepository = studentRepository;
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
     @Override
     public String registerStudent(StudentDTO studentDetails) {
@@ -58,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
                 .authenticate(new UsernamePasswordAuthenticationToken(loginInfo.getRegNumber(),
                         loginInfo.getPassword()));
         if (authentication.isAuthenticated()){
-            return "Success";
+            return jwtService.generateToken(loginInfo.getRegNumber());
         }
         return "fail";
     }
