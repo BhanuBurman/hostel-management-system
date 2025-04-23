@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import api from "../AxiosConfig";
 
 const ComplainDetailPage = () => {
   const [complainDetails, setComplainDetails] = useState(null);
@@ -16,7 +17,7 @@ const ComplainDetailPage = () => {
 
     const fetchComplainDetails = async () => {
       try {
-        const response = await axios.get(
+        const response = await api.get(
           `http://localhost:8080/complain/get-complain-detailsById/${complaintId}`
         );
         setComplainDetails(response.data);

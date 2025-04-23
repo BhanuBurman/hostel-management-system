@@ -1,5 +1,6 @@
 package com.vit.hostel.management.entities;
 
+//import com.vit.hostel.management.enums.MealConverter;
 import com.vit.hostel.management.enums.MealType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,9 +20,8 @@ public class FoodMenuEntity {
 
     private String day;
 
-
+    @Enumerated(EnumType.STRING)
     private MealType mealType;
-
 
     private String foodItems;
 

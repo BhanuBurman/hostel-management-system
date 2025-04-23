@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum RoleTypeName implements PersistableEnum {
-    STUDENT("Student"),
-    ADMIN("Admin"),
-    WARDEN("Warden");
+    Student("Student"),
+    Admin("Admin"),
+    Warden("Warden");
 
     private final String roleName;
 

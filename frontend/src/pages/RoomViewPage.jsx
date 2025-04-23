@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios';
+import api from '../AxiosConfig';
 
 const RoomViewPage = () => {
     const location = useLocation();
@@ -14,7 +15,7 @@ const RoomViewPage = () => {
     },[]);
     const fetchRoomTypeById = () =>{
         if(roomTypeId == -1) return;
-        axios.get("http://localhost:8080/room-types/get-roomType-by-id/"+roomTypeId)
+        api.get("http://localhost:8080/room-types/get-roomType-by-id/"+roomTypeId)
         .then((response) => {
             console.log("Fetched Room Type Info:", response.data); 
             setRoomTypeInfo(response.data)})

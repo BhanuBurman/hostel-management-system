@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cglib.core.internal.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -19,19 +20,20 @@ import java.util.Map;
 
 @Service
 public class JwtService {
+    @Value("${jwt.secret}")
     private String SECRET_KEY;
 
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 hours
 
-    public JwtService(){
-        try{
-            KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
-            SecretKey sk = keyGen.generateKey();
-            SECRET_KEY = Base64.getEncoder().encodeToString(sk.getEncoded());
-        }catch (NoSuchAlgorithmException exception){
-            throw new RuntimeException(exception);
-        }
-    }
+//    public JwtService(){
+//        try{
+//            KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
+//            SecretKey sk = keyGen.generateKey();
+//            SECRET_KEY = Base64.getEncoder().encodeToString(sk.getEncoded());
+//        }catch (NoSuchAlgorithmException exception){
+//            throw new RuntimeException(exception);
+//        }
+//    }
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }

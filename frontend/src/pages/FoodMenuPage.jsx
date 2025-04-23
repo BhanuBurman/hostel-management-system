@@ -2,48 +2,20 @@ import React, { useState , useEffect} from "react";
 
 import foodBg from "../assets/food-menu-bg.jpg"
 import axios from "axios";
+import api from "../AxiosConfig";
 
 const FoodMenuPage = () => {
 
   const [foodMenu, setFoodMenu] = useState();
-  const menu = {
-    Monday: [
-      ["Idli & Sambar", "Rice & Dal", "Samosa", "Paneer Butter Masala"],
-      ["Milk & Juice", "Chapati & Curry", "Tea & Biscuits", "Chicken Curry"],
-    ],
-    Tuesday: [
-      ["Poha & Jalebi", "Rajma Chawal", "Puff", "Aloo Paratha"],
-      ["Fruits", "Roti & Sabzi", "Cold Coffee", "Fish Curry"],
-    ],
-    Wednesday: [
-      ["Dosa & Chutney", "Chole Bhature", "Pakora", "Dal Tadka"],
-      ["Cornflakes", "Fried Rice", "Lassi", "Egg Curry"],
-    ],
-    Thursday: [
-      ["Upma & Chutney", "Veg Pulao", "Cookies", "Shahi Paneer"],
-      ["Banana Shake", "Roti & Dal", "Bhel Puri", "Mutton Curry"],
-    ],
-    Friday: [
-      ["Paratha & Curd", "Mix Veg Rice", "Kachori", "Methi Malai Matar"],
-      ["Tea & Sandwich", "Dal & Sabzi", "Lemonade", "Chicken Biryani"],
-    ],
-    Saturday: [
-      ["Dhokla & Chutney", "Pulao & Chole", "Chaat", "Paneer Do Pyaza"],
-      ["Milk & Cornflakes", "Jeera Rice", "Hot Chocolate", "Prawn Curry"],
-    ],
-    Sunday: [
-      ["Aloo Poori", "Hyderabadi Biryani", "Spring Rolls", "Butter Chicken"],
-      ["Juice", "Tandoori Roti & Curry", "Fruit Salad", "Kadai Paneer"],
-    ],
-  };
 
   useEffect(() => {
     fetchFoodMenu();
   }, []);
 
   const fetchFoodMenu = () =>{
-    axios.get("http://localhost:8080/food/get-food-menu")
+    api.get("http://localhost:8080/food/get-food-menu")
     .then((response) => {
+      
       setFoodMenu(response.data);
     }).catch((error) => {alert(error.message);});
   }
@@ -70,10 +42,10 @@ const FoodMenuPage = () => {
   {foodMenu && Object.entries(foodMenu).map(([day, meals], index) => (
     <tr key={index} className="bg-white/80 hover:bg-white">
       <td className="p-3 border font-semibold">{day}</td>
-      <td className="p-3 border">{meals.BREAKFAST || "-"}</td>
-      <td className="p-3 border">{meals.LUNCH || "-"}</td>
-      <td className="p-3 border">{meals.SNACKS || "-"}</td>
-      <td className="p-3 border">{meals.DINNER || "-"}</td>
+      <td className="p-3 border">{meals.Breakfast || "-"}</td>
+      <td className="p-3 border">{meals.Lunch || "-"}</td>
+      <td className="p-3 border">{meals.Snacks || "-"}</td>
+      <td className="p-3 border">{meals.Dinner || "-"}</td>
     </tr>
   ))}
 </tbody>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import complainDefaultImg from "../assets/complain_default.png";
+import api from "../AxiosConfig";
 
 const CreateComplaint = ({ onClose }) => {
   const [categoryTypeList, setCategoryTypeList] = useState([]);
@@ -10,12 +11,12 @@ const CreateComplaint = ({ onClose }) => {
   const [complaintDescription, setComplaintDescription] = useState("");
 
   useEffect(() => {
-    axios
+    api
       .get("http://localhost:8080/complain/get-all-complaint-categories")
       .then((response) => setCategoryTypeList(response.data))
       .catch((err) => console.log(err));
 
-    axios
+    api
       .get("http://localhost:8080/complain/get-all-complaint-subcategories")
       .then((response) => setSubCategoryTypeList(response.data))
       .catch((err) => console.log(err));
@@ -33,7 +34,7 @@ const CreateComplaint = ({ onClose }) => {
       subcategoryId: parseInt(selectedSubCategoryTypeIndex) +1
     };
     console.log("complaintData : ", complaintData);
-    axios
+    api
     .post("http://localhost:8080/complain/add-complaint", complaintData)
     .then((response) => alert(response.data))
     .catch((err) => alert(err.message));

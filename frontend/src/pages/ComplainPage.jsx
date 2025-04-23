@@ -4,6 +4,7 @@ import Room from "../assets/room_img.jpg";
 import { useLocation, useNavigate } from "react-router-dom";
 import CreateComplaint from "../components/CreateComplaint";
 import { RiArrowDropDownLine } from "react-icons/ri";
+import api from "../AxiosConfig";
 const ComplainPage = () => {
   const location = useLocation();
   const roomObj = location.state?.roomsTypeId || -1;
@@ -39,7 +40,7 @@ const ComplainPage = () => {
   }, []);
 
   const fetchCompains = () => {
-    axios
+    api
       .get("http://localhost:8080/complain/get-all-complaints")
       .then((response) => {
         setComplaintList(response.data);
@@ -56,7 +57,7 @@ const ComplainPage = () => {
     // }catch(e){
     //   console.log(e);
     // }
-    axios
+    api
       .get("http://localhost:8080/room-types/get-all-room-types")
       .then((response) => {
         setAllRoomTypeList(response.data);

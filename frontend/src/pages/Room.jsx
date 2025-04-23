@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import CreateRooms from "../components/CreateRooms";
+import api from "../AxiosConfig";
 
 const Room = () => {
 
@@ -47,7 +48,7 @@ const Room = () => {
     "bg-gradient-to-l from-green-600 to-green-700 hover:from-green-700  ";
 
   const fetchRoomInfo = () => {
-    axios
+    api
       .get(
         "http://localhost:8080/room/get-rooms-by-floor-number/" + floorNumber
       )
@@ -61,7 +62,7 @@ const Room = () => {
   };
 
   const fetchTotalFloors = () => {
-    axios
+    api
       .get("http://localhost:8080/room/get-total-floors")
       .then((response) => {
         setTotalFloors(response.data);

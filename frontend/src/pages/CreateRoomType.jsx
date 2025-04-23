@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Room from "../assets/room_img.jpg";
 import { useLocation } from "react-router-dom";
+import api from "../AxiosConfig";
 
 const CreateRoomType = () => {
   const location = useLocation();
@@ -51,7 +52,7 @@ const CreateRoomType = () => {
     // }catch(e){
     //   console.log(e);
     // }
-    axios
+    api
       .get("http://localhost:8080/room-types/get-all-room-types")
       .then((response) => {
         setAllRoomTypeList(response.data);
@@ -76,7 +77,7 @@ const CreateRoomType = () => {
     //   ...roomData,
     //   image: imageUrl,
     // });
-    axios
+    api
       .post("http://localhost:8080/room-types/add-room-type", roomData, {
         headers: {
           "Content-Type": "application/json",
@@ -109,7 +110,7 @@ const CreateRoomType = () => {
     formData.append("file", imageFile);
     formData.append("upload_preset", presetName);
 
-    axios
+    api
       .post(
         `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
         formData

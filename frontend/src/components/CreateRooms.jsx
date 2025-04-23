@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import api from "../AxiosConfig";
 
 const CreateRooms = (props) => {
     const [roomList, setRoomList] = useState([]);
@@ -37,7 +38,7 @@ const CreateRooms = (props) => {
 
   // Fetch room types
   const fetchRoomTypes = () => {
-    axios
+    api
       .get("http://localhost:8080/room-types/get-all-room-types")
       .then((response) => {
         setRoomTypeList(response.data);
@@ -80,7 +81,7 @@ const CreateRooms = (props) => {
 
 
   const uploadRoomList = (newRoomList) => {
-    axios
+    api
      .post("http://localhost:8080/room/add-multiple-rooms-info", newRoomList)
      .then((response) => {
         console.log(response.data);

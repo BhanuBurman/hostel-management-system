@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/room-types")
-@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS})
+@CrossOrigin
 @Tag(name="Room Types", description = "This API returns room type information by id")
 public class CreateRoomTypesController {
     private final CreateRoomTypeService createRoomTypesService;

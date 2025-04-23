@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/complain")
-@CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS})
+@CrossOrigin
 @Tag(name = "Complaint APIs", description = "This is used for fetching data for complaint related operations")
 public class ComplaintController {
     private final ComplaintService complaintService;
