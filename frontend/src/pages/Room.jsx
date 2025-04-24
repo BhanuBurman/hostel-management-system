@@ -56,8 +56,10 @@ const Room = () => {
         setRoomsInfoList(response.data);
       })
       .catch((err) => {
-        alert("Error fetching rooms information");
-        console.log(err);
+        if (err.response && err.response.status !== 401) {
+          alert("Error fetching room information");
+          console.error(err);
+        }
       });
   };
 
