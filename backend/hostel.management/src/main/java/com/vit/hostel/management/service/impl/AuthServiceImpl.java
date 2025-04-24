@@ -9,6 +9,7 @@ import com.vit.hostel.management.repository.StudentRepository;
 import com.vit.hostel.management.repository.UserRepository;
 import com.vit.hostel.management.service.AuthService;
 import com.vit.hostel.management.service.JwtService;
+import com.vit.hostel.management.service.RoleBasedAuthToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -58,8 +59,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String verify(AuthRequestDTO loginInfo) {
         Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginInfo.getRegNumber(),
-                        loginInfo.getPassword()));
+                .authenticate(new RoleBasedAuthToken(loginInfo.getRegNumber(),
+                        loginInfo.getPassword(),
+                        loginInfo.getRoleType()));
         if (authentication.isAuthenticated()){
             return jwtService.generateToken(loginInfo.getRegNumber());
         }

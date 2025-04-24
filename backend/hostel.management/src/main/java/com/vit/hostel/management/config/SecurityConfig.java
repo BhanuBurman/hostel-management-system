@@ -1,6 +1,8 @@
 package com.vit.hostel.management.config;
 
-import com.vit.hostel.management.service.CustomUserDetailsService;
+import com.vit.hostel.management.service.AdminDetailsService;
+import com.vit.hostel.management.service.RoleBasedAuthenticationProvider;
+import com.vit.hostel.management.service.StudentDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,11 +29,13 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final CustomUserDetailsService customUserDetailsService;
+    private final AdminDetailsService adminDetailsService;
+    private final StudentDetailsService studentDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter){
-        this.customUserDetailsService = customUserDetailsService;
+    SecurityConfig(AdminDetailsService adminDetailsService, StudentDetailsService studentDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter){
+        this.adminDetailsService = adminDetailsService;
+        this.studentDetailsService = studentDetailsService;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
     @Bean
@@ -51,10 +55,11 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
-        provider.setUserDetailsService(customUserDetailsService);
-        return provider;
+        return new RoleBasedAuthenticationProvider(
+                adminDetailsService,
+                studentDetailsService,
+                new BCryptPasswordEncoder(12)
+        );
     }
 
     @Bean

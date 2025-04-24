@@ -8,9 +8,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class StudentDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
-    CustomUserDetailsService(UserRepository userRepository){
+    StudentDetailsService(UserRepository userRepository){
         this.userRepository = userRepository;
     }
     @Override
@@ -20,6 +20,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             System.out.println("User not found");
             throw new UsernameNotFoundException("User not found");
         }
-        return new UserPrincipal(user);
+        return new StudentPrincipal(user);
     }
 }
