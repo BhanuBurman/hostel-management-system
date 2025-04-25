@@ -7,8 +7,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDetailsDTO {
-    private Integer roleTypeId;
+public class UserCommonDetailsDTO {
+    private String roleType;
+    private String name;
     private String regNumber;
-    private String password;
+    private String email;
+    private String phone;
 }

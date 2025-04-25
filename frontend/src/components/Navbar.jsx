@@ -4,22 +4,38 @@ import { NavLink } from "react-router-dom";
 import Register from "./Register";
 import Login from "./Login";
 import { useNavigate } from "react-router-dom";
+import NavLogo from "../../public/hostel tab logo.png";
 
 
 import { FaUserCircle } from "react-icons/fa";
+import api from "../AxiosConfig";
+import axios from "axios";
 
 const Navbar = () => {
   const [isRegisterClicked, setIsRegisterClicked] = useState(false);
   const [isLoginClicked, setIsLoginClicked] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token); // true if token exists
+    if(token){
+      fetchUserDetails(token);
+    }
   }, []);
+
+  const fetchUserDetails = (token) =>{
+    axios.post("http://localhost:8080/auth/user-details"
+      ,token
+    ).then((response) =>{
+      console.log(response.data);
+      setUserInfo(response.data);
+    })
+  }
 
   const handleScroll = (id) => {
     document.getElementById(id).scrollIntoView({ behavior: "smooth" });
@@ -38,7 +54,9 @@ const Navbar = () => {
         <Register onClose={() => setIsRegisterClicked(false)} />
       )}
       {isLoginClicked && <Login onClose={() => setIsLoginClicked(false)} />}
-      <img src={Logo} alt="logo" />
+        <div className="w-20 h-8  overflow-hidden">
+        <img src={NavLogo} alt="logo" className="relative -top-10 w-28 h-30 object-contain"/>
+        </div>
       <ul className="flex">
         <NavLink className="mx-5" to={"/"}>
           Home
@@ -73,6 +91,11 @@ const Navbar = () => {
         />
         {showDropdown && (
           <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-md z-10">
+            <div
+            className="w-full text-left px-4 py-2 border-b-gray-300 border-b-2"
+            >
+              Hi👋, {userInfo?.name.split(" ")[0] || "User"}
+            </div>
             <button
               className="w-full text-left px-4 py-2 hover:bg-gray-100"
               onClick={() => alert("Go to profile")}

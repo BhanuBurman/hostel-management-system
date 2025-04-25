@@ -2,9 +2,11 @@ package com.vit.hostel.management.service.impl;
 
 import com.vit.hostel.management.dtos.StudentDTO;
 import com.vit.hostel.management.dtos.authentication.AuthRequestDTO;
-import com.vit.hostel.management.dtos.authentication.UserDetailsDTO;
+import com.vit.hostel.management.dtos.authentication.UserCommonDetailsDTO;
+import com.vit.hostel.management.entities.AdminEntity;
 import com.vit.hostel.management.entities.StudentInfoEntity;
 import com.vit.hostel.management.entities.StudentEntity;
+import com.vit.hostel.management.repository.AdminRepository;
 import com.vit.hostel.management.repository.StudentRepository;
 import com.vit.hostel.management.repository.UserRepository;
 import com.vit.hostel.management.service.AuthService;
@@ -22,12 +24,14 @@ import java.time.Year;
 @Service
 public class AuthServiceImpl implements AuthService {
 
+    private final AdminRepository adminRepository;
     private final StudentRepository studentRepository;
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
-    AuthServiceImpl(StudentRepository studentRepository, UserRepository userRepository, AuthenticationManager authenticationManager, JwtService jwtService){
+    AuthServiceImpl(AdminRepository adminRepository, StudentRepository studentRepository, UserRepository userRepository, AuthenticationManager authenticationManager, JwtService jwtService){
+        this.adminRepository = adminRepository;
         this.studentRepository = studentRepository;
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
@@ -63,12 +67,34 @@ public class AuthServiceImpl implements AuthService {
                         loginInfo.getPassword(),
                         loginInfo.getRoleType()));
         if (authentication.isAuthenticated()){
-            return jwtService.generateToken(loginInfo.getRegNumber());
+            return jwtService.generateToken(loginInfo.getRegNumber(), loginInfo.getRoleType());
         }
         return "fail";
     }
 
-    private void registerUser(UserDetailsDTO userDetailsDTO){
-
+    @Override
+    public UserCommonDetailsDTO getUserCommonDetails(String token) {
+        String regNumber = jwtService.extractUsername(token);
+        String roleType = jwtService.extractRoleType(token);
+        if("Warden".equalsIgnoreCase(roleType)){
+            AdminEntity admin = adminRepository.findByRegNumber(regNumber);
+            return UserCommonDetailsDTO.builder()
+                    .name(admin.getEmail())
+                    .name(admin.getName())
+                    .phone(admin.getPhone())
+                    .roleType(roleType)
+                    .regNumber(admin.getRegNumber())
+                    .build();
+        }else if("Student".equalsIgnoreCase(roleType)){
+            StudentInfoEntity student = studentRepository.findByRegNumber(regNumber);
+            return UserCommonDetailsDTO.builder()
+                    .phone(student.getPhoneNo())
+                    .regNumber(student.getRegNumber())
+                    .roleType(roleType)
+                    .name(student.getStudentName())
+                    .email(student.getStudentEmail())
+                    .build();
+        }
+        return null;
     }
 }

@@ -1,10 +1,12 @@
 package com.vit.hostel.management.service;
 
+import lombok.Getter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
+@Getter
 public class RoleBasedAuthToken extends UsernamePasswordAuthenticationToken {
     private final String roleType;
 
@@ -18,7 +20,4 @@ public class RoleBasedAuthToken extends UsernamePasswordAuthenticationToken {
         this.roleType = roleType;
     }
 
-    public String getRoleType() {
-        return roleType;
-    }
 }

@@ -2,6 +2,7 @@ package com.vit.hostel.management.controllers;
 
 import com.vit.hostel.management.dtos.StudentDTO;
 import com.vit.hostel.management.dtos.authentication.AuthRequestDTO;
+import com.vit.hostel.management.dtos.authentication.UserCommonDetailsDTO;
 import com.vit.hostel.management.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,5 +26,10 @@ public class AuthController {
     @PostMapping("/signup-student")
     public ResponseEntity<String> signupStudent(@RequestBody StudentDTO studentDetails){
         return ResponseEntity.ok(authService.registerStudent(studentDetails));
+    }
+
+    @PostMapping("/user-details")
+    public ResponseEntity<UserCommonDetailsDTO> getUserDetails(@RequestBody String token){
+        return ResponseEntity.ok(authService.getUserCommonDetails(token));
     }
 }

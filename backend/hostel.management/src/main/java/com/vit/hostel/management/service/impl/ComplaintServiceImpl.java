@@ -87,7 +87,7 @@ public class ComplaintServiceImpl implements ComplaintService {
     @Override
     public ComplainDetailDTO getComplainDetailsByID(Integer complainId) {
         ComplaintEntity complaint = complaintRepository.findById(complainId).orElseThrow();
-        StudentInfoEntity student = studentRepository.findById(complaint.getStudentId()).orElseThrow();
+        StudentInfoEntity student = studentRepository.findByStudentId(complaint.getStudentId());
         ComplaintCategoryEntity category = complaintCategoryRepository.findByCategoryId(complaint.getCategoryId());
         ComplaintSubCategoryEntity subCategory = complaintSubCategoryRepository.findBySubCategoryId(complaint.getSubCategoryId());
         return ComplainDetailDTO.builder()
