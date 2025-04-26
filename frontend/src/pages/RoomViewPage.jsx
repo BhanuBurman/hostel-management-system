@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios';
 import api from '../AxiosConfig';
+import { useUser } from '../context/UserContext';
 
 const RoomViewPage = () => {
     const location = useLocation();
-    console.log(location.state);
+    // console.log(location.state);
     const [roomTypeInfo, setRoomTypeInfo] = useState(null);
     const roomTypeId = location.state?.roomTypeId || -1;
     
+
+    const {user} = useUser();
 
     useEffect(()=>{
         fetchRoomTypeById();
@@ -20,6 +23,20 @@ const RoomViewPage = () => {
             console.log("Fetched Room Type Info:", response.data); 
             setRoomTypeInfo(response.data)})
         .catch(() => alert("Error fetching data"))
+    }
+
+    const handleBooking = ()=>{
+      console.log(roomTypeInfo);
+      const request = {
+        roomNumber:location.state?.roomNumber,
+        regNumber:user?.regNumber
+      }
+      console.log("Room book request: ",request);
+      
+      api.put("http://localhost:8080/room/book-room", request)
+      .then((response)=>{
+        alert(response.data);
+      }).catch((err)=> alert(err.message()));
     }
   return (
     <div className="room__view min-h-screen w-full bg-gray-100 flex justify-center items-center px-4 py-8">
@@ -42,7 +59,10 @@ const RoomViewPage = () => {
       <p className='flex justify-between shadow-md p-2 px-5 m-5'><span className="font-semibold">AC:</span> <span>{roomTypeInfo.isAC ? "Yes" : "No"}</span></p>
       <p className='flex justify-between shadow-md p-2 px-5 m-5'><span className="font-semibold">Price:</span> <span>₹{roomTypeInfo.price.toFixed(2)}</span></p>
       <div className="booking_button w-full flex justify-center">
-        <button className=' bg-green-600 hover:bg-green-700 cursor-pointer p-2 px-10 text-2xl text-white font-semibold rounded-md'>Book</button>
+        <button 
+        className={` bg-green-600 hover:bg-green-700 cursor-pointer p-2 px-10 text-2xl text-white font-semibold rounded-md ${user?.roleType.toLowerCase() === "student"?"":"hidden"}`}
+        onClick={handleBooking}
+        >Book</button>
     </div>
     </div>
   ) : (

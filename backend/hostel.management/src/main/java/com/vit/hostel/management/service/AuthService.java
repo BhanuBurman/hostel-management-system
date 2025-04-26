@@ -11,4 +11,6 @@ public interface AuthService {
     String verify(AuthRequestDTO loginInfo);
 
     UserCommonDetailsDTO getUserCommonDetails(String token);
+
+    StudentDTO getStudentDetailsByRegNumber(String regNumber);
 }

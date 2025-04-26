@@ -12,6 +12,7 @@ import com.vit.hostel.management.repository.UserRepository;
 import com.vit.hostel.management.service.AuthService;
 import com.vit.hostel.management.service.JwtService;
 import com.vit.hostel.management.service.RoleBasedAuthToken;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.time.Year;
 
+@Slf4j
 @Service
 public class AuthServiceImpl implements AuthService {
 
@@ -47,7 +49,6 @@ public class AuthServiceImpl implements AuthService {
                 .regNumber(studentDetails.getRegNumber())
                 .phoneNo(studentDetails.getStudentPhone())
                 .gender(studentDetails.getStudentGender())
-                .roomNumber(studentDetails.getRoomNumber())
                 .admissionYear(Year.of(2025))
                 .branch(studentDetails.getStudentBranch())
                 .build();
@@ -96,5 +97,23 @@ public class AuthServiceImpl implements AuthService {
                     .build();
         }
         return null;
+    }
+
+    @Override
+    public StudentDTO getStudentDetailsByRegNumber(String regNumber) {
+        log.info("Reg number: {}",regNumber);
+        StudentInfoEntity student = studentRepository.findByRegNumber(regNumber);
+        return StudentDTO.builder()
+                .regNumber(regNumber)
+                .studentDOB(String.valueOf(student.getDob()))
+                .studentBranch(student.getBranch())
+                .studentAddress(student.getAddress())
+                .studentPhone(student.getPhoneNo())
+                .admissionYear(String.valueOf(student.getAdmissionYear()))
+                .studentGender(student.getGender())
+                .studentEmail(student.getStudentEmail())
+                .roomNumber(student.getRoomNumber())
+                .studentName(student.getStudentName())
+                .build();
     }
 }

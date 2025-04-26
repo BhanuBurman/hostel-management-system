@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 
 const Login = (props) => {
@@ -8,8 +9,6 @@ const Login = (props) => {
     password: "",
     roleType:"Student",
   });
-
-  // const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData((prev) => ({

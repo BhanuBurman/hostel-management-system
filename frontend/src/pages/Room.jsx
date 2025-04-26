@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CreateRooms from "../components/CreateRooms";
 import api from "../AxiosConfig";
+import { useUser } from "../context/UserContext";
 
 const Room = () => {
+  const {user} = useUser();  
 
-  const floorNames = 
-  {
+  const floorNames = {
     0: "G",
     1: "A",
     2: "B",
@@ -32,7 +33,6 @@ const Room = () => {
     21: "T",
     22: "U",
   };
-
 
   const navigation = useNavigate();
 
@@ -64,6 +64,7 @@ const Room = () => {
   };
 
   const fetchTotalFloors = () => {
+    console.log("Floor number : " + floorNumber);
     api
       .get("http://localhost:8080/room/get-total-floors")
       .then((response) => {
@@ -89,7 +90,8 @@ const Room = () => {
       return;
     }
     setFloorNumber(floorNumber - 1);
-    fetchRoomInfo();
+    // console.log("Prev: "+floorNumber);
+    // fetchRoomInfo();
   };
 
   const handleNext = () => {
@@ -98,22 +100,22 @@ const Room = () => {
       return;
     }
     setFloorNumber(floorNumber + 1);
-    fetchRoomInfo();
+    // console.log("Next: "+floorNumber);
+    // fetchRoomInfo();
   };
 
   useEffect(() => {
     fetchRoomInfo();
     fetchTotalFloors();
-  }, []);
-  
-  const handleCreateRoomNavigation = (index) =>{
+  }, [floorNumber]);
+
+  const handleCreateRoomNavigation = (index) => {
     const state = {
       roomNumber: roomsInfoList[index].roomNumber,
-      roomTypeId:roomsInfoList[index].roomTypeId
-    }
-    navigation("/room-view", {state})
-  }
-
+      roomTypeId: roomsInfoList[index].roomTypeId,
+    };
+    navigation("/room-view", { state });
+  };
 
   return (
     <div className="rooms_info_container  h-screen w-full p-7 bg-gray-100 flex justify-center items-center flex-col">
@@ -121,9 +123,9 @@ const Room = () => {
         <CreateRooms
           isVisible={isCreateRoomsClicked}
           onClose={() => setIsCreateRoomsClicked(false)}
-          currentFloorNumber = {floorNumber}
-          totalFloors = {totalFloors}
-          currentFloorTotalRooms = {roomsInfoList.length}
+          currentFloorNumber={floorNumber}
+          totalFloors={totalFloors}
+          currentFloorTotalRooms={roomsInfoList.length}
         />
       )}
       <div className="room_info w-300 shadow-md rounded-lg h-150 bg-white p-5">
@@ -139,7 +141,7 @@ const Room = () => {
             onClick={handleAddFloor}
             >Add Floor</button> */}
             <button
-              className="upload p-2 text-2xl px-3 rounded-md transition-all hover:scale-105 bg-green-600 text-white cursor-pointer hover:bg-green-700"
+              className={`upload p-2 text-2xl px-3 rounded-md transition-all hover:scale-105 bg-green-600 text-white cursor-pointer hover:bg-green-700 ${user?.roleType.toLowerCase() === "student" ? "hidden" : ""}`}
               onClick={() => setIsCreateRoomsClicked(true)}
             >
               Create Rooms
@@ -154,12 +156,11 @@ const Room = () => {
                 transition-all hover:scale-105
                 ${
                   item.availableBeds === 0 ? fullRoomStyle : availableRoomStyle
-                }`
-              }
-              onClick={() => handleCreateRoomNavigation(index)}
+                }`}
+                onClick={() => handleCreateRoomNavigation(index)}
                 key={item.roomId}
               >
-                <p className="text-lg font-semibold">{item.roomNumber}</p>
+                <p className="text-2xl font-semibold">{item.roomNumber}</p>
                 <p>Beds : {item.totalBeds}</p>
                 <p>
                   Available beds : {item.availableBeds}/{item.totalBeds}
@@ -171,17 +172,27 @@ const Room = () => {
       </div>
       <div className="next_prev_buttons w-full text-center p-5">
         <button
-          className="prev_button next_button bg-blue-700 p-2 px-5 rounded-md text-white cursor-pointer"
+          className={`prev_button bg-blue-700 p-2 px-5 rounded-md text-white cursor-pointer transition-all ${
+            floorNumber === 0
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-blue-800"
+          }`}
           onClick={handlePrev}
+          disabled={floorNumber === 0}
         >
           Prev
         </button>
-        <span className="text-2xl font-semibold px-10 ">
-          {floorNumber}/{totalFloors}
+        <span className="text-2xl font-semibold px-10">
+          {floorNumber + 1}/{totalFloors}
         </span>
         <button
-          className="next_button bg-blue-700 p-2 px-5 rounded-md text-white cursor-pointer"
+          className={`next_button bg-blue-700 p-2 px-5 rounded-md text-white cursor-pointer transition-all ${
+            floorNumber >= totalFloors - 1
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-blue-800"
+          }`}
           onClick={handleNext}
+          disabled={floorNumber >= totalFloors - 1}
         >
           Next
         </button>

@@ -1,9 +1,11 @@
 package com.vit.hostel.management.controllers;
 
+import com.vit.hostel.management.dtos.RoomBookingRequestDTO;
 import com.vit.hostel.management.dtos.RoomInfoDTO;
 import com.vit.hostel.management.service.RoomInfoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
+import jakarta.persistence.PostUpdate;
 import jakarta.websocket.server.PathParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,5 +45,10 @@ public class RoomController {
     @PostMapping("/add-multiple-rooms-info")
     public ResponseEntity<String> addMultiRoomInfo(@RequestBody List<RoomInfoDTO> roomInfoDTOList){
         return ResponseEntity.ok(roomInfoService.addMultiRoomInfo(roomInfoDTOList));
+    }
+
+    @PutMapping("/book-room")
+    public ResponseEntity<String> bookRoomByStudent(@RequestBody RoomBookingRequestDTO roomBookingRequestDTO){
+        return ResponseEntity.ok(roomInfoService.bookRoom(roomBookingRequestDTO));
     }
 }

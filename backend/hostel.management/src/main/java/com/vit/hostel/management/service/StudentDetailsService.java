@@ -22,4 +22,6 @@ public class StudentDetailsService implements UserDetailsService {
         }
         return new StudentPrincipal(user);
     }
+
+
 }

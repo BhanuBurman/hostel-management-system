@@ -10,6 +10,7 @@ import NavLogo from "../../public/hostel tab logo.png";
 import { FaUserCircle } from "react-icons/fa";
 import api from "../AxiosConfig";
 import axios from "axios";
+import { useUser } from "../context/UserContext";
 
 const Navbar = () => {
   const [isRegisterClicked, setIsRegisterClicked] = useState(false);
@@ -19,6 +20,7 @@ const Navbar = () => {
   const [userInfo, setUserInfo] = useState(null);
 
   const navigate = useNavigate();
+  const {setUser} = useUser();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -32,8 +34,8 @@ const Navbar = () => {
     axios.post("http://localhost:8080/auth/user-details"
       ,token
     ).then((response) =>{
-      console.log(response.data);
       setUserInfo(response.data);
+      setUser(response.data);
     })
   }
 
@@ -98,7 +100,7 @@ const Navbar = () => {
             </div>
             <button
               className="w-full text-left px-4 py-2 hover:bg-gray-100"
-              onClick={() => alert("Go to profile")}
+              onClick={() => navigate("/user-profile", {state: {userInfo}})}
             >
               Profile
             </button>

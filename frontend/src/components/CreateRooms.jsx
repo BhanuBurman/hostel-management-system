@@ -63,7 +63,7 @@ const CreateRooms = (props) => {
     const floorNumber =
       floorOption === "current"
         ? props.currentFloorNumber
-        : props.totalFloors + 1;
+        : props.totalFloors;
 
     const startingRoomNumber =
       floorOption === "current" ? props.currentFloorTotalRooms : 0;
@@ -94,107 +94,117 @@ const CreateRooms = (props) => {
      .catch((err) => console.log(err));
   }
   return (
-    <div
-      className={
-        "create_room_window h-screen w-full z-10 absolute flex left-0 top-0 bg-gray-900/40  justify-center items-center flex-col"
-      }
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+  <div className="relative w-full max-w-md mx-auto p-8 bg-white rounded-3xl shadow-2xl">
+    
+    {/* Close Button */}
+    <button
+      className="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition-all duration-300 text-2xl"
+      onClick={props.onClose}
     >
-      <div className=" flex w-full justify-end">
-        <button
-          className="bg-red-500 text-white p-2 px-5 m-2 top-0 absolute text-3xl cursor-pointer"
-          onClick={props.onClose}
-        >
-          X
-        </button>
+      ×
+    </button>
+
+    {/* Heading */}
+    <h2 className="text-2xl font-bold text-center text-blue-700 mb-8">
+      Create Room
+    </h2>
+
+    {/* Room Type Dropdown */}
+    <div className="mb-6">
+      <label className="block text-gray-700 font-semibold mb-2">Room Type</label>
+      <select
+        value={selectedRoomTypeIndex}
+        onChange={(e) => {
+          const value = e.target.value;
+          if (value === "custom") {
+            navigate("/create-room-type");
+            return;
+          }
+          setSelectedRoomTypeIndex(value);
+        }}
+        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+      >
+        <option value="">Select Room Type</option>
+        {roomTypeList.map((roomType, index) => (
+          <option key={roomType.id} value={index}>
+            {roomType.noOfBeds} Beds - {roomType.isAC ? "AC" : "Non-AC"}
+          </option>
+        ))}
+        <option key="custom" value="custom">
+          Create Custom Room Type
+        </option>
+      </select>
+    </div>
+
+    {/* Room Type Details */}
+    {selectedRoomTypeIndex !== "" && (
+      <div className="bg-blue-50 p-4 rounded-lg mb-6">
+        <p className="text-gray-800">AC: {roomTypeList[selectedRoomTypeIndex].isAC ? "Yes" : "No"}</p>
+        <p className="text-gray-800">Beds: {roomTypeList[selectedRoomTypeIndex].noOfBeds}</p>
+        <p className="text-gray-800">Price: ₹{roomTypeList[selectedRoomTypeIndex].price}</p>
       </div>
-      <div className="create_room_card h-auto border-2 w-[400px] rounded-md bg-gray-200 flex flex-col justify-center items-center p-4 gap-4">
-        {/* Room Type Dropdown */}
-        <div className="flex flex-col items-center">
-          <label className="mb-1">Room Type:</label>
-          <select
-            value={selectedRoomTypeIndex}
-            onChange={(e) => {
-              const value = e.target.value;
-              if(value === "custom"){
-                navigate("/create-room-type");
-                return ;
-              }
-              setSelectedRoomTypeIndex(e.target.value);
-            }}
-            className="p-1 rounded"
-          >
-            <option value="">Select Room Type</option>
-            {roomTypeList.map((roomType, index) => (
-              <option key={roomType.id} value={index}>
-                {roomType.noOfBeds} Beds - {roomType.isAC ? "AC" : "Non-AC"}
-              </option>
-            ))}
-            <option key="custom" value="custom">
-                Create Custom Room Type
-              </option>
-          </select>
-        </div>
+    )}
 
-        {/* Show room type details if selected */}
-        {selectedRoomTypeIndex !== "" && (
-          <div className="flex flex-col items-start gap-2">
-            <p>AC: {roomTypeList[selectedRoomTypeIndex].isAC ? "Yes" : "No"}</p>
-            <p>No of Beds: {roomTypeList[selectedRoomTypeIndex].noOfBeds}</p>
-            <p>Price: ₹{roomTypeList[selectedRoomTypeIndex].price}</p>
-          </div>
-        )}
-
-        {/* Floor Selection Radio */}
-        <div className="flex flex-col items-start mt-4">
-          <p className="mb-2">Floor:</p>
-          <div className="flex gap-4">
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="floor"
-                value="current"
-                checked={floorOption === "current"}
-                onChange={(e) => setFloorOption(e.target.value)}
-                className="mr-1"
-              />
-              Current
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="floor"
-                value="next"
-                checked={floorOption === "next"}
-                onChange={(e) => setFloorOption(e.target.value)}
-                className="mr-1"
-              />
-              New
-            </label>
-          </div>
-        </div>
-
-        {/* No of Rooms Input */}
-        <div className="flex flex-col items-center mt-4">
-          <label className="mb-1">Number of Rooms:</label>
+    {/* Floor Selection */}
+    <div className="mb-6">
+      <p className="block text-gray-700 font-semibold mb-2">Select Floor</p>
+      <div className="flex gap-6">
+        <label className="flex items-center gap-2">
           <input
-            type="number"
-            value={noOfRooms}
-            onChange={(e) => setNoOfRooms(e.target.value)}
-            className="p-1 rounded border"
-            placeholder="Enter number"
+            type="radio"
+            name="floor"
+            value="current"
+            checked={floorOption === "current"}
+            onChange={(e) => setFloorOption(e.target.value)}
+            className="accent-blue-600"
           />
-        </div>
-
-        {/* For Debugging */}
-        <div className="mt-4 text-sm text-gray-700">
-          <p>Selected Floor: {floorOption}</p>
-          <p>No of Rooms: {noOfRooms}</p>
-        </div>
-        <div className="submit_button border-2 p-2 px-5 rounded-sm">
-          <button onClick={handleCreateRoom}>Submit</button>
-        </div>
+          Current
+        </label>
+        <label className="flex items-center gap-2">
+          <input
+            type="radio"
+            name="floor"
+            value="next"
+            checked={floorOption === "next"}
+            onChange={(e) => setFloorOption(e.target.value)}
+            className="accent-blue-600"
+          />
+          New
+        </label>
       </div>
     </div>
+
+    {/* Number of Rooms */}
+    <div className="mb-6">
+      <label className="block text-gray-700 font-semibold mb-2">Number of Rooms</label>
+      <input
+        type="number"
+        value={noOfRooms}
+        onChange={(e) => setNoOfRooms(e.target.value)}
+        placeholder="Enter number"
+        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+    </div>
+
+    {/* Debug Info (Optional) */}
+    <div className="text-xs text-gray-500 mb-4">
+      <p>Selected Floor: {floorOption}</p>
+      <p>No of Rooms: {noOfRooms}</p>
+    </div>
+
+    {/* Submit Button */}
+    <div className="flex justify-center">
+      <button
+        onClick={handleCreateRoom}
+        className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-300"
+      >
+        Submit
+      </button>
+    </div>
+  </div>
+</div>
+
   );
 };
 

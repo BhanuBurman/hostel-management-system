@@ -32,4 +32,9 @@ public class AuthController {
     public ResponseEntity<UserCommonDetailsDTO> getUserDetails(@RequestBody String token){
         return ResponseEntity.ok(authService.getUserCommonDetails(token));
     }
+
+    @PostMapping("/student-full-details")
+    public ResponseEntity<StudentDTO> getStudentFullDetailsByRegNumber(@RequestBody String regNumber){
+        return ResponseEntity.ok(authService.getStudentDetailsByRegNumber(regNumber));
+    }
 }
