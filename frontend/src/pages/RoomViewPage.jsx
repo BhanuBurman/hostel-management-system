@@ -45,7 +45,7 @@ const RoomViewPage = () => {
     {/* Info Section */}
     <div className="info_section p-6 flex flex-col justify-center space-y-3">
   <h2 className="text-2xl font-bold text-gray-800">
-    Room No: {location.state?.roomNumber || "N/A"}
+    Room: {location.state?.roomNumber || "N/A"}
   </h2>
 
   {roomTypeInfo ? (
@@ -60,9 +60,14 @@ const RoomViewPage = () => {
       <p className='flex justify-between shadow-md p-2 px-5 m-5'><span className="font-semibold">Price:</span> <span>₹{roomTypeInfo.price.toFixed(2)}</span></p>
       <div className="booking_button w-full flex justify-center">
         <button 
-        className={` bg-green-600 hover:bg-green-700 cursor-pointer p-2 px-10 text-2xl text-white font-semibold rounded-md ${user?.roleType.toLowerCase() === "student"?"":"hidden"}`}
+        className={` bg-green-600   p-2 px-10 text-2xl text-white font-semibold rounded-md
+          ${user?.roomNumber === location.state?.roomNumber?"cursor-not-allowed opacity-50 ":" cursor-pointer hover:bg-green-700 "}
+          ${user?.roleType.toLowerCase() === "student"?"":"hidden"}`}
         onClick={handleBooking}
-        >Book</button>
+        disabled={user?.roomNumber === location.state?.roomNumber}
+        >
+          {user?.roomNumber === location.state?.roomNumber?"Booked":"Book"}
+        </button>
     </div>
     </div>
   ) : (

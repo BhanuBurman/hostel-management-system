@@ -5,8 +5,10 @@ import CreateRooms from "../components/CreateRooms";
 import api from "../AxiosConfig";
 import { useUser } from "../context/UserContext";
 
+import { TiTick } from "react-icons/ti";
+
 const Room = () => {
-  const {user} = useUser();  
+  const { user } = useUser();
 
   const floorNames = {
     0: "G",
@@ -43,9 +45,11 @@ const Room = () => {
   const [roomsInfoList, setRoomsInfoList] = useState([]);
 
   const fullRoomStyle =
-    "bg-gradient-to-l from-amber-700 to-red-700 hover:from-red-700 hover:to-amber-700";
+    "bg-gradient-to-l from-amber-700 to-red-700 ";
   const availableRoomStyle =
-    "bg-gradient-to-l from-green-600 to-green-700 hover:from-green-700  ";
+    "bg-gradient-to-l from-green-600 to-green-700 ";
+  const bookedRoomStyle =
+    "bg-gradient-to-l from-green-600 to-gray-700 ";
 
   const fetchRoomInfo = () => {
     api
@@ -90,8 +94,6 @@ const Room = () => {
       return;
     }
     setFloorNumber(floorNumber - 1);
-    // console.log("Prev: "+floorNumber);
-    // fetchRoomInfo();
   };
 
   const handleNext = () => {
@@ -100,9 +102,14 @@ const Room = () => {
       return;
     }
     setFloorNumber(floorNumber + 1);
-    // console.log("Next: "+floorNumber);
-    // fetchRoomInfo();
   };
+
+  // const fetchStudentRoomNumber = ()=>{
+  //   api.get("http://localhost::8080/auth/student-full-details", user?.regNumber)
+  //   .then((response) =>{
+
+  //   })
+  // }
 
   useEffect(() => {
     fetchRoomInfo();
@@ -141,7 +148,9 @@ const Room = () => {
             onClick={handleAddFloor}
             >Add Floor</button> */}
             <button
-              className={`upload p-2 text-2xl px-3 rounded-md transition-all hover:scale-105 bg-green-600 text-white cursor-pointer hover:bg-green-700 ${user?.roleType.toLowerCase() === "student" ? "hidden" : ""}`}
+              className={`upload p-2 text-2xl px-3 rounded-md transition-all hover:scale-105 bg-green-600 text-white cursor-pointer hover:bg-green-700 ${
+                user?.roleType.toLowerCase() === "student" ? "hidden" : ""
+              }`}
               onClick={() => setIsCreateRoomsClicked(true)}
             >
               Create Rooms
@@ -149,25 +158,30 @@ const Room = () => {
           </div>
         </div>
         <div className="floor_area w-full h-125 border-1 border-gray-200 flex flex-wrap gap-y-0 gap-5 p-5 mt-4 overflow-y-auto bg-gray-800">
-          {roomsInfoList.map((item, index) => {
-            return (
-              <div
-                className={`room_card text-sm border-0 h-30 rounded-md text-white p-2 cursor-pointer
+          { roomsInfoList.map((item, index) => {
+              return (
+                <div
+                  className={`room_card text-sm border-0 h-30 rounded-md text-white p-2 cursor-pointer
                 transition-all hover:scale-105
                 ${
-                  item.availableBeds === 0 ? fullRoomStyle : availableRoomStyle
+                  user?.roomNumber === item.roomNumber? bookedRoomStyle : (
+                  item.availableBeds === 0 ? fullRoomStyle : availableRoomStyle)
                 }`}
-                onClick={() => handleCreateRoomNavigation(index)}
-                key={item.roomId}
-              >
-                <p className="text-2xl font-semibold">{item.roomNumber}</p>
-                <p>Beds : {item.totalBeds}</p>
-                <p>
-                  Available beds : {item.availableBeds}/{item.totalBeds}
-                </p>
-              </div>
-            );
-          })}
+                  onClick={() => handleCreateRoomNavigation(index)}
+                  key={item.roomId}
+                >
+                  <p className="text-2xl font-semibold">{item.roomNumber}</p>
+                  <p>Beds : {item.totalBeds}</p>
+                  <p>
+                    Available beds : {item.availableBeds}/{item.totalBeds}
+                  </p>
+                  {user?.roomNumber === item.roomNumber && (
+                    <p className={"text-lg font-semibold flex items-center"}>Booked<TiTick className=" rounded-full bg-green-800 ml-1 p-1 text-2xl"/></p>
+                  )}
+                  {/* {console.log(user)} */}
+                </div>
+              );
+            })}
         </div>
       </div>
       <div className="next_prev_buttons w-full text-center p-5">

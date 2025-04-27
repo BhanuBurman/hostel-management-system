@@ -13,4 +13,5 @@ public class UserCommonDetailsDTO {
     private String regNumber;
     private String email;
     private String phone;
+    private String roomNumber;
 }

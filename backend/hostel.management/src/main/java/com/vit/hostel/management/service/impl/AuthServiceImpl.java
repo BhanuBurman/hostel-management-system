@@ -80,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
         if("Warden".equalsIgnoreCase(roleType)){
             AdminEntity admin = adminRepository.findByRegNumber(regNumber);
             return UserCommonDetailsDTO.builder()
-                    .name(admin.getEmail())
+                    .email(admin.getEmail())
                     .name(admin.getName())
                     .phone(admin.getPhone())
                     .roleType(roleType)
@@ -94,6 +94,7 @@ public class AuthServiceImpl implements AuthService {
                     .roleType(roleType)
                     .name(student.getStudentName())
                     .email(student.getStudentEmail())
+                    .roomNumber(student.getRoomNumber())
                     .build();
         }
         return null;
