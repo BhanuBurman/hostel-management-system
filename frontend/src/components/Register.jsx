@@ -30,7 +30,10 @@ const Register = (props) => {
         admissionYear: formData.admissionYear.split("-")[0], // convert month to year
       };
 
-      const res = await axios.post("http://localhost:8080/auth/signup-student", payload);
+      const res = await axios.post(
+        "http://localhost:8080/auth/signup-student",
+        payload
+      );
       console.log("✅ Student registered:", res.data);
       alert("Registration successful!");
       props.onClose();
@@ -157,25 +160,27 @@ const Register = (props) => {
           </div>
 
           <select
-  name="admissionYear"
-  value={formData.admissionYear}
-  onChange={handleChange}
-  className="border text-gray-600 border-gray-300 p-3 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-  required
->
-  <option value="" disabled>
-    Select Admission Year
-  </option>
-  {Array.from({ length: new Date().getFullYear() - 2000 + 1 }, (_, i) => {
-    const year = 2000 + i;
-    return (
-      <option key={year} value={year}>
-        {year}
-      </option>
-    );
-  })}
-</select>
-
+            name="admissionYear"
+            value={formData.admissionYear}
+            onChange={handleChange}
+            className="border text-gray-600 border-gray-300 p-3 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            required
+          >
+            <option value="" disabled>
+              Select Admission Year
+            </option>
+            {Array.from(
+              { length: new Date().getFullYear() - 2000 + 1 },
+              (_, i) => {
+                const year = 2000 + i;
+                return (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                );
+              }
+            )}
+          </select>
 
           <input
             type="text"

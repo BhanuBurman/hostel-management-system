@@ -15,4 +15,6 @@ public interface ComplaintService {
     List<ComplaintResponseDTO> getAllComplaints();
 
     ComplainDetailDTO getComplainDetailsByID(Integer complainId);
+
+    String updateComplain(ComplaintUpdateRequestDTO complaintUpdateRequestDTO);
 }

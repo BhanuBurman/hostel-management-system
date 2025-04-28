@@ -37,6 +37,11 @@ public class RoleBasedAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("User not found for role: " + roleType + " and username: " + username);
         }
 
+        // ✅ Password Matching Logic
+        if (!encoder.matches(password, userDetails.getPassword())) {
+            throw new BadCredentialsException("Invalid password!");
+        }
+
         return new RoleBasedAuthToken(userDetails, password,roleType, userDetails.getAuthorities() );
     }
 

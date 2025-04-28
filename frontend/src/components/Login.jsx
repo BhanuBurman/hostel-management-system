@@ -24,7 +24,7 @@ const Login = (props) => {
     console.log(formData);
     
     const response = await axios.post("http://localhost:8080/auth/login", formData);
-    // console.log(response);
+    console.log(response);
     
     
     const token = response.data; // Make sure backend returns token like this

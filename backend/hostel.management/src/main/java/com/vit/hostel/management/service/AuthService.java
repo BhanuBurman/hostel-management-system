@@ -1,6 +1,7 @@
 package com.vit.hostel.management.service;
 
 import com.vit.hostel.management.dtos.StudentDTO;
+import com.vit.hostel.management.dtos.authentication.AdminDTO;
 import com.vit.hostel.management.dtos.authentication.AuthRequestDTO;
 import com.vit.hostel.management.dtos.authentication.UserCommonDetailsDTO;
 
@@ -13,4 +14,6 @@ public interface AuthService {
     UserCommonDetailsDTO getUserCommonDetails(String token);
 
     StudentDTO getStudentDetailsByRegNumber(String regNumber);
+
+    String registerAdmin(AdminDTO adminDTO);
 }

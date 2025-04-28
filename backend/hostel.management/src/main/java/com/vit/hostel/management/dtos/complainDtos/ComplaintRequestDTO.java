@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ComplaintRequestDTO {
-    private int studentId;
+    private String studentRegNumber;
     private int categoryId;
     private int subcategoryId;
     private String description;

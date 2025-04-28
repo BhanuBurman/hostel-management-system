@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import complainDefaultImg from "../assets/complain_default.png";
 import api from "../AxiosConfig";
+import { useUser } from "../context/UserContext";
 
 const CreateComplaint = ({ onClose }) => {
+
+  const {user} = useUser();
+
   const [categoryTypeList, setCategoryTypeList] = useState([]);
   const [subCategoryTypeList, setSubCategoryTypeList] = useState([]);
   const [selectedCategoryTypeIndex, setSelectedCategoryTypeIndex] = useState("");
@@ -28,10 +32,10 @@ const CreateComplaint = ({ onClose }) => {
       return;
     }
     const complaintData = {
-      studentId: 1,
+      studentRegNumber: user?.regNumber,
       description: complaintDescription,
       categoryId:  parseInt(selectedCategoryTypeIndex) +1 ,
-      subcategoryId: parseInt(selectedSubCategoryTypeIndex) +1
+      subcategoryId: parseInt(selectedSubCategoryTypeId)
     };
     console.log("complaintData : ", complaintData);
     api

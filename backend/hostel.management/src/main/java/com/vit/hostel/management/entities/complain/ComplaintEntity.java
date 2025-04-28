@@ -18,8 +18,8 @@ public class ComplaintEntity {
     @Column(name = "complaint_id")
     private Integer complaintId;
 
-    @Column(name = "student_id")
-    private Integer studentId;
+    @Column(name = "student_reg_number")
+    private String studentRegNumber;
 
     @Column(name = "category_id")
     private Integer categoryId;
@@ -39,6 +39,6 @@ public class ComplaintEntity {
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
-    @Column(name = "admin_id")
-    private Integer adminId;
+    @Column(name = "admin_reg_number")
+    private String adminRegNumber;
 }

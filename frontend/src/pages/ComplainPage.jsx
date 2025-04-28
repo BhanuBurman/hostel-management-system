@@ -5,7 +5,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import CreateComplaint from "../components/CreateComplaint";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import api from "../AxiosConfig";
+import { useUser } from "../context/UserContext";
 const ComplainPage = () => {
+  const { user } = useUser();
   const location = useLocation();
   const roomObj = location.state?.roomsTypeId || -1;
 
@@ -36,10 +38,10 @@ const ComplainPage = () => {
   ]);
   useEffect(() => {
     fetchRoomTypes();
-    fetchCompains();
+    fetchCompaints();
   }, []);
 
-  const fetchCompains = () => {
+  const fetchCompaints = () => {
     api
       .get("http://localhost:8080/complain/get-all-complaints")
       .then((response) => {
@@ -115,12 +117,14 @@ const ComplainPage = () => {
           </button>
         </div>
 
-        <button
-          className="complain_button p-1 text-md px-2 rounded-md transition-all hover:scale-105 bg-gray-700 text-white cursor-pointer hover:bg-black"
-          onClick={() => setNewComplaintClicked(true)}
-        >
-          New Complain
-        </button>
+        {user?.roleType.toLowerCase() === "student" && (
+          <button
+            className="complain_button p-1 text-md px-2 rounded-md transition-all hover:scale-105 bg-gray-700 text-white cursor-pointer hover:bg-black"
+            onClick={() => setNewComplaintClicked(true)}
+          >
+            New Complain
+          </button>
+        )}
       </div>
       <div className="room__info w-full shadow-2xl p-5 bg-white rounded-br-lg rounded-bl-lg">
         {/* Create room Type  */}
@@ -164,7 +168,7 @@ const ComplainPage = () => {
                           </span>
                         </td> */}
                     <td className="px-4 py-3 flex">
-                      <select
+                      {/* <select
                         className={`pl-2 py-1 text-sm font-semibold rounded flex  ${
                           complaint.status === "Pending"
                             ? "bg-red-500 text-white"
@@ -177,7 +181,18 @@ const ComplainPage = () => {
                         <option value="Pending">Pending</option>
                         <option value="In Progress">In Progress</option>
                         <option value="Resolved">Resolved</option>
-                      </select>
+                      </select> */}
+                      <div
+                        className={`px-4 py-1 text-sm font-semibold rounded flex  ${
+                          complaint.status === "Pending"
+                            ? "bg-red-500 text-white"
+                            : complaint.status === "In Progress"
+                            ? "bg-yellow-500 text-white"
+                            : "bg-green-500 text-white"
+                        }`}
+                      >
+                        {complaint.status}
+                      </div>
                     </td>
                     <td className="px-4 py-3">{complaint.submittedAt}</td>
                     <td className="px-4 py-3">

@@ -1,5 +1,6 @@
 package com.vit.hostel.management.config;
 
+import com.vit.hostel.management.service.AdminDetailsService;
 import com.vit.hostel.management.service.StudentDetailsService;
 import com.vit.hostel.management.service.JwtService;
 import jakarta.servlet.FilterChain;
@@ -31,14 +32,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
         String token = null;
         String username = null;
+        String roleType = null;
 
         if(authHeader != null && authHeader.startsWith("Bearer ")){
-            token = authHeader.substring(7);
+            token = authHeader.substring(7).trim();
             username = jwtService.extractUsername(token);
+            roleType = jwtService.extractRoleType(token);
         }
 
-        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = context.getBean(StudentDetailsService.class).loadUserByUsername(username);
+        if(username != null && roleType != null && SecurityContextHolder.getContext().getAuthentication() == null){
+            UserDetails userDetails;
+            if ("Warden".equalsIgnoreCase(roleType)) {
+                userDetails = context.getBean(AdminDetailsService.class).loadUserByUsername(username);
+            } else if ("Student".equalsIgnoreCase(roleType)) {
+                userDetails = context.getBean(StudentDetailsService.class).loadUserByUsername(username);
+            } else {
+                throw new RuntimeException("Invalid roleType found in JWT: " + roleType);
+            }
             if(jwtService.validateToken(token,userDetails)){
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

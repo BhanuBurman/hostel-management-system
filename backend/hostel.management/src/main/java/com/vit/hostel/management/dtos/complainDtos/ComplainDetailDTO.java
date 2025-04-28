@@ -16,6 +16,7 @@ public class ComplainDetailDTO {
     private String description;
     private String submittedAt;
     private String updatedAt;
+    private String comment;
 
     // student information
     private int studentId;

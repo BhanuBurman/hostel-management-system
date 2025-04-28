@@ -14,7 +14,7 @@ import lombok.Setter;
 @Builder
 public class ComplaintResponseDTO {
     private int complaintId;
-    private int studentId;
+    private String studentRegNumber;
     private String studentName;
 //    private int categoryId;
     private String categoryName;

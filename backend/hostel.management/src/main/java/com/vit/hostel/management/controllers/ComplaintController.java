@@ -42,4 +42,9 @@ public class ComplaintController {
         return ResponseEntity.ok(complaintService.addComplaint(complaintRequestDTO));
     }
 
+    @PutMapping("/update-complaint")
+    public ResponseEntity<String> updateComplaint(@RequestBody ComplaintUpdateRequestDTO complaintUpdateRequestDTO){
+        return ResponseEntity.ok(complaintService.updateComplain(complaintUpdateRequestDTO));
+    }
+
 }

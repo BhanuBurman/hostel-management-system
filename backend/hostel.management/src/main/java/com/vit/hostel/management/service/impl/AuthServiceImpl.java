@@ -1,6 +1,7 @@
 package com.vit.hostel.management.service.impl;
 
 import com.vit.hostel.management.dtos.StudentDTO;
+import com.vit.hostel.management.dtos.authentication.AdminDTO;
 import com.vit.hostel.management.dtos.authentication.AuthRequestDTO;
 import com.vit.hostel.management.dtos.authentication.UserCommonDetailsDTO;
 import com.vit.hostel.management.entities.AdminEntity;
@@ -116,5 +117,18 @@ public class AuthServiceImpl implements AuthService {
                 .roomNumber(student.getRoomNumber())
                 .studentName(student.getStudentName())
                 .build();
+    }
+
+    @Override
+    public String registerAdmin(AdminDTO adminDTO) {
+        AdminEntity admin = AdminEntity.builder()
+                .phone(adminDTO.getPhone())
+                .email(adminDTO.getEmail())
+                .password(encoder.encode(adminDTO.getPassword()))
+                .regNumber(adminDTO.getRegNumber())
+                .name(adminDTO.getName())
+                .build();
+        adminRepository.save(admin);
+        return "";
     }
 }
