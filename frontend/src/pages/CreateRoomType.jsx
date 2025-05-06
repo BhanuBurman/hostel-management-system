@@ -13,6 +13,7 @@ const CreateRoomType = () => {
   const [isCreateTab, setIsCreateTab] = useState(true);
   const [imageUrl, setImageUrl] = useState("");
   const [imageFile, setImageFile] = useState(null);
+  const [isImageUploading , setIsImageUploading] = useState(false);
   const [allRoomTypeList, setAllRoomTypeList] = useState([
     // {
     //   id: 0,
@@ -67,18 +68,21 @@ const CreateRoomType = () => {
       .catch((err) => console.log(err));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // ****** Commenting out image upload system for smooth developemtn and testing *****
-    // if (imageFile !== null) {
-    //   uploadOnCloudinary();
-    // }
-    // setRoomData({
-    //   ...roomData,
-    //   image: imageUrl,
-    // });
+  
+    if (imageFile === null || imageUrl.length == 0) {
+      alert("Image uploading please wait...");
+      return;
+    } 
+  
+    const updatedRoomData = {
+      ...roomData,
+      image: imageUrl,
+    };
+  
     api
-      .post("http://localhost:8080/room-types/add-room-type", roomData, {
+      .post("http://localhost:8080/room-types/add-room-type", updatedRoomData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -91,6 +95,7 @@ const CreateRoomType = () => {
         console.error("Error in Room Type Creation", error);
       });
   };
+  
 
   const handleChange = (event) => {
     setRoomData({
@@ -103,26 +108,40 @@ const CreateRoomType = () => {
     setRoomData({ ...roomData, isAC: event.target.value === "true" });
   };
 
-  const uploadOnCloudinary = async () => {
+  const uploadOnCloudinary = async (file) => {
     const cloudName = "dv5lxe8m7";
     const presetName = "meme-uploads";
     const formData = new FormData();
-    formData.append("file", imageFile);
+    formData.append("file", file);
     formData.append("upload_preset", presetName);
-
-    api
-      .post(
+  
+    try {
+      const response = await axios.post(
         `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
         formData
-      )
-      .then((response) => {
-        console.log("Uploaded Image URL:", response.data.secure_url);
-        setImageUrl(response.data.secure_url);
-      })
-      .catch((err) => {
-        console.error("Error in Image Upload", err);
-      });
+      );
+      console.log("Uploaded Image URL:", response.data.secure_url);
+      setImageUrl(response.data.secure_url);
+      return response.data.secure_url; // important for chaining
+    } catch (err) {
+      console.error("Error in Image Upload", err);
+      throw err;
+    }
   };
+
+  const handleUpload = async (e) =>{
+    const file = e.target.files[0];
+    if(!file){
+      alert("No file selected");
+      return;
+    }
+    setImageFile(file);
+    setIsImageUploading(true);
+    const uploadImageURL = await uploadOnCloudinary(file);
+    setIsImageUploading(false);
+    setImageUrl(uploadImageURL);
+  }
+  
 
   return (
     <div className="room__type h-full w-full flex justify-center bg-gray-100 p-10">
@@ -209,10 +228,11 @@ const CreateRoomType = () => {
 
             {/* ✅ Image Upload Section */}
             <div className="imageSection border-1 border-gray-300 shadow-lg h-140 w-110 flex flex-col items-center justify-center">
-              {imageFile && (
+              {isImageUploading && <p>uploading...</p>}
+              {imageUrl.length > 0 && (
                 <img
                   className="w-100 h-100 mb-4 object-cover rounded-lg"
-                  src={URL.createObjectURL(imageFile)}
+                  src={imageUrl}
                   alt="Room"
                 />
               )}
@@ -221,7 +241,7 @@ const CreateRoomType = () => {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={(e) => setImageFile(e.target.files[0])}
+                  onChange={handleUpload}
                   className="hidden"
                 />
               </label>

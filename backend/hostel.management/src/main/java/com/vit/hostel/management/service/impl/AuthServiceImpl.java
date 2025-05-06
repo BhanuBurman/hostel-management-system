@@ -15,7 +15,6 @@ import com.vit.hostel.management.service.JwtService;
 import com.vit.hostel.management.service.RoleBasedAuthToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -50,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
                 .regNumber(studentDetails.getRegNumber())
                 .phoneNo(studentDetails.getStudentPhone())
                 .gender(studentDetails.getStudentGender())
-                .admissionYear(Year.of(2025))
+                .admissionYear(Year.now())
                 .branch(studentDetails.getStudentBranch())
                 .build();
         StudentEntity student = StudentEntity.builder()
@@ -114,7 +113,6 @@ public class AuthServiceImpl implements AuthService {
                 .admissionYear(String.valueOf(student.getAdmissionYear()))
                 .studentGender(student.getGender())
                 .studentEmail(student.getStudentEmail())
-                .roomNumber(student.getRoomNumber())
                 .studentName(student.getStudentName())
                 .build();
     }

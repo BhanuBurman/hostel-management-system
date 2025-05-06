@@ -13,7 +13,6 @@ const Register = (props) => {
     studentBranch: "",
     studentGender: "",
     admissionYear: "",
-    roomNumber: "",
   });
 
   const handleChange = (e) => {
@@ -181,16 +180,6 @@ const Register = (props) => {
               }
             )}
           </select>
-
-          <input
-            type="text"
-            name="roomNumber"
-            value={formData.roomNumber}
-            onChange={handleChange}
-            placeholder="Room Number"
-            className="border text-gray-600 border-gray-300 p-3 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            required
-          />
 
           <button
             type="submit"

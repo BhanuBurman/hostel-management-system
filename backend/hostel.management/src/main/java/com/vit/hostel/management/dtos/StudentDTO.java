@@ -15,7 +15,6 @@ public class StudentDTO {
     private String studentEmail;
     private String studentPhone;
     private String studentAddress;
-    private String roomNumber;
     private String studentGender;
     private String studentDOB;
     private String studentBranch;
