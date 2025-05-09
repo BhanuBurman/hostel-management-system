@@ -16,7 +16,7 @@ FROM openjdk:21
 WORKDIR /app
 
 
-COPY target/*.jar app.jar
+COPY --from=builder /app/target/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","app.jar", "--spring.profiles.active=dev"]
 
