@@ -2,9 +2,13 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../AxiosConfig";
+import Spinner from "./Spinner";
 // import { useNavigate } from "react-router-dom";
 
 const Login = (props) => {
+
+  const [isUserLoggingIn, setIsUserLoggingIn] = useState(false);
+
   const [formData, setFormData] = useState({
     regNumber: "",
     password: "",
@@ -19,6 +23,7 @@ const Login = (props) => {
   };
 
   const handleLogin = async (e) => {
+  setIsUserLoggingIn(true);
     e.preventDefault();
 
   try {
@@ -29,7 +34,7 @@ const Login = (props) => {
     
     
     const token = response.data; // Make sure backend returns token like this
-
+    setIsUserLoggingIn(false);
     if (token) {
       localStorage.setItem("token", token); // Or sessionStorage.setItem()
 
@@ -92,8 +97,9 @@ const Login = (props) => {
           <button
             type="submit"
             className="col-span-2 bg-blue-600 text-white p-3 w-full rounded-md text-lg font-semibold hover:bg-blue-700 transition-all duration-300 cursor-pointer"
+            disabled={isUserLoggingIn}
           >
-            Log In
+            {isUserLoggingIn? <Spinner /> : <span>Log In</span>}
           </button>
         </form>
       </div>
