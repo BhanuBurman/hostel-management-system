@@ -2,7 +2,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL_PROD || "http://localhost:8080",
+  // Vite expects variables to start with VITE_
+  baseURL: import.meta.env.VITE_API_URL_PROD || "http://localhost:8080",
   // baseURL: "https://hostel-management-system-2bhd.onrender.com",
 });
 
