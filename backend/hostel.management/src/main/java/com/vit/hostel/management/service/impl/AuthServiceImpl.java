@@ -113,6 +113,7 @@ public class AuthServiceImpl implements AuthService {
                 .admissionYear(String.valueOf(student.getAdmissionYear()))
                 .studentGender(student.getGender())
                 .studentEmail(student.getStudentEmail())
+                .roomNumber(student.getRoomNumber())
                 .studentName(student.getStudentName())
                 .build();
     }

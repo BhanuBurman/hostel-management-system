@@ -27,6 +27,7 @@ public class ComplaintController {
         return ResponseEntity.ok(complaintService.getAllComplaintSubCategories());
     }
 
+    // TODO: get all complaints by user reg number
     @GetMapping("/get-all-complaints")
     public ResponseEntity<List<ComplaintResponseDTO>> getAllComplaints(){
         return ResponseEntity.ok(complaintService.getAllComplaints());

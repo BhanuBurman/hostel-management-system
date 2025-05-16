@@ -26,6 +26,8 @@ const UserProfile = () => {
         )
         .then((response) => {
           setStudentDetails(response.data);
+          console.log("Fetched Student Details:", response.data);
+          
         })
         .catch((error) => {
           console.error("Error fetching student details:", error);

@@ -6,6 +6,7 @@ import api from "../AxiosConfig";
 import { useUser } from "../context/UserContext";
 
 import { TiTick } from "react-icons/ti";
+import Spinner from "../components/Spinner";
 
 const Room = () => {
   const { user } = useUser();
@@ -43,21 +44,19 @@ const Room = () => {
   const [isCreateRoomsClicked, setIsCreateRoomsClicked] = useState(false);
 
   const [roomsInfoList, setRoomsInfoList] = useState([]);
+  const [isRoomFetching, setIsRoomFetching] = useState(false);
 
-  const fullRoomStyle =
-    "bg-gradient-to-l from-amber-700 to-red-700 ";
-  const availableRoomStyle =
-    "bg-gradient-to-l from-green-600 to-green-700 ";
-  const bookedRoomStyle =
-    "bg-gradient-to-l from-green-600 to-gray-700 ";
+  const fullRoomStyle = "bg-gradient-to-l from-amber-700 to-red-700 ";
+  const availableRoomStyle = "bg-gradient-to-l from-green-600 to-green-700 ";
+  const bookedRoomStyle = "bg-gradient-to-l from-green-600 to-gray-700 ";
 
   const fetchRoomInfo = () => {
+    setIsRoomFetching(true);
     api
-      .get(
-        "/room/get-rooms-by-floor-number/" + floorNumber
-      )
+      .get("/room/get-rooms-by-floor-number/" + floorNumber)
       .then((response) => {
         setRoomsInfoList(response.data);
+        setIsRoomFetching(false);
       })
       .catch((err) => {
         if (err.response && err.response.status !== 401) {
@@ -158,14 +157,20 @@ const Room = () => {
           </div>
         </div>
         <div className="floor_area w-full h-125 border-1 border-gray-200 flex flex-wrap gap-y-0 gap-5 p-5 mt-4 overflow-y-auto bg-gray-800">
-          { roomsInfoList.map((item, index) => {
+          {isRoomFetching ? (
+            <Spinner />
+          ) : (
+            roomsInfoList.map((item, index) => {
               return (
                 <div
                   className={`room_card text-sm border-0 h-30 rounded-md text-white p-2 cursor-pointer
                 transition-all hover:scale-105
                 ${
-                  user?.roomNumber === item.roomNumber? bookedRoomStyle : (
-                  item.availableBeds === 0 ? fullRoomStyle : availableRoomStyle)
+                  user?.roomNumber === item.roomNumber
+                    ? bookedRoomStyle
+                    : item.availableBeds === 0
+                    ? fullRoomStyle
+                    : availableRoomStyle
                 }`}
                   onClick={() => handleCreateRoomNavigation(index)}
                   key={item.roomId}
@@ -176,12 +181,16 @@ const Room = () => {
                     Available beds : {item.availableBeds}/{item.totalBeds}
                   </p>
                   {user?.roomNumber === item.roomNumber && (
-                    <p className={"text-lg font-semibold flex items-center"}>Booked<TiTick className=" rounded-full bg-green-800 ml-1 p-1 text-2xl"/></p>
+                    <p className={"text-lg font-semibold flex items-center"}>
+                      Booked
+                      <TiTick className=" rounded-full bg-green-800 ml-1 p-1 text-2xl" />
+                    </p>
                   )}
                   {/* {console.log(user)} */}
                 </div>
               );
-            })}
+            })
+          )}
         </div>
       </div>
       <div className="next_prev_buttons w-full text-center p-5">

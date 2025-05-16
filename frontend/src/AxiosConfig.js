@@ -2,8 +2,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  // baseURL: process.env.REACT_APP_API_URL_PROD || "http://localhost:8080",
-  baseURL: "https://hostel-management-system-2bhd.onrender.com",
+  baseURL: process.env.REACT_APP_API_URL_PROD || "http://localhost:8080",
+  // baseURL: "https://hostel-management-system-2bhd.onrender.com",
 });
 
 

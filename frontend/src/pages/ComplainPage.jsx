@@ -6,6 +6,7 @@ import CreateComplaint from "../components/CreateComplaint";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import api from "../AxiosConfig";
 import { useUser } from "../context/UserContext";
+import Spinner from "../components/Spinner";
 const ComplainPage = () => {
   const { user } = useUser();
   const location = useLocation();
@@ -21,6 +22,7 @@ const ComplainPage = () => {
   const [imageFile, setImageFile] = useState(null);
 
   const [complaintList, setComplaintList] = useState([]);
+  const [isLoadingComplaints, setIsLoadingComplaints] = useState(false);
 
   const [allRoomTypeList, setAllRoomTypeList] = useState([
     // {
@@ -42,10 +44,12 @@ const ComplainPage = () => {
   }, []);
 
   const fetchCompaints = () => {
+    setIsLoadingComplaints(true);
     api
       .get("/complain/get-all-complaints")
       .then((response) => {
         setComplaintList(response.data);
+        setIsLoadingComplaints(false);
       })
       .catch((err) => console.log(err));
   };
@@ -128,90 +132,63 @@ const ComplainPage = () => {
       </div>
       <div className="room__info w-full shadow-2xl p-5 bg-white rounded-br-lg rounded-bl-lg">
         {/* Create room Type  */}
-        {isCreateTab && (
-          //   <div className="p-6 bg-gray-100 min-h-screen bg-red-600">
-          <div className="overflow-auto ">
-            <table className="min-w-full bg-white border border-gray-200 rounded-lg">
-              <thead className="bg-gray-200">
-                <tr>
-                  <th className="px-4 py-3 text-left">ID</th>
-                  <th className="px-4 py-3 text-left">Category</th>
-                  <th className="px-4 py-3 text-left">Subcategory</th>
-                  {/* <th className="px-4 py-3 text-left">Priority</th> */}
-                  <th className="px-4 py-3 text-left">Status</th>
-                  <th className="px-4 py-3 text-left">Date</th>
-                  <th className="px-4 py-3 text-left">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {complaintList.map((complaint) => (
-                  <tr
-                    key={complaint.complaintId}
-                    className="border-t border-gray-200"
-                  >
-                    <td className="px-4 py-3">{complaint.complaintId}</td>
-                    <td className="px-4 py-3">{complaint.categoryName}</td>
-                    <td className="px-4 py-3">{complaint.subcategoryName}</td>
-                    {/* <td className="px-4 py-3">{complaint.category}</td>
-                        <td className="px-4 py-3">{complaint.subcategory}</td> */}
-                    {/* <td className="px-4 py-3">
-                          <span
-                            className={`px-2 py-1 text-sm font-semibold rounded ${
-                              complaint.priority === "Urgent"
-                                ? "bg-red-500 text-white"
-                                : complaint.priority === "High"
-                                ? "bg-yellow-500 text-white"
-                                : "bg-green-500 text-white"
-                            }`}
-                          >
-                            {complaint.priority}
-                          </span>
-                        </td> */}
-                    <td className="px-4 py-3 flex">
-                      {/* <select
-                        className={`pl-2 py-1 text-sm font-semibold rounded flex  ${
-                          complaint.status === "Pending"
-                            ? "bg-red-500 text-white"
-                            : complaint.status === "In Progress"
-                            ? "bg-yellow-500 text-white"
-                            : "bg-green-500 text-white"
-                        }`}
-                        value={status}
-                      >
-                        <option value="Pending">Pending</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Resolved">Resolved</option>
-                      </select> */}
-                      <div
-                        className={`px-4 py-1 text-sm font-semibold rounded flex  ${
-                          complaint.status === "Pending"
-                            ? "bg-red-500 text-white"
-                            : complaint.status === "In Progress"
-                            ? "bg-yellow-500 text-white"
-                            : "bg-green-500 text-white"
-                        }`}
-                      >
-                        {complaint.status}
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">{complaint.submittedAt}</td>
-                    <td className="px-4 py-3">
-                      <button
-                        className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 mr-2"
-                        onClick={() => handleViewDetails(complaint.complaintId)}
-                      >
-                        View
-                      </button>
-                      {/* <button className="px-3 py-1 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
-                        Edit
-                      </button> */}
-                    </td>
+        {isLoadingComplaints ? (
+          <Spinner />
+        ) : (
+          isCreateTab && (
+            //   <div className="p-6 bg-gray-100 min-h-screen bg-red-600">
+            <div className="overflow-auto ">
+              <table className="min-w-full bg-white border border-gray-200 rounded-lg">
+                <thead className="bg-gray-200">
+                  <tr>
+                    <th className="px-4 py-3 text-left">ID</th>
+                    <th className="px-4 py-3 text-left">Category</th>
+                    <th className="px-4 py-3 text-left">Subcategory</th>
+                    {/* <th className="px-4 py-3 text-left">Priority</th> */}
+                    <th className="px-4 py-3 text-left">Status</th>
+                    <th className="px-4 py-3 text-left">Date</th>
+                    <th className="px-4 py-3 text-left">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          // </div>
+                </thead>
+                <tbody>
+                  {complaintList.map((complaint) => (
+                    <tr
+                      key={complaint.complaintId}
+                      className="border-t border-gray-200"
+                    >
+                      <td className="px-4 py-3">{complaint.complaintId}</td>
+                      <td className="px-4 py-3">{complaint.categoryName}</td>
+                      <td className="px-4 py-3">{complaint.subcategoryName}</td>
+                      <td className="px-4 py-3 flex">
+                        <div
+                          className={`px-4 py-1 text-sm font-semibold rounded flex  ${
+                            complaint.status === "Pending"
+                              ? "bg-red-500 text-white"
+                              : complaint.status === "In Progress"
+                              ? "bg-yellow-500 text-white"
+                              : "bg-green-500 text-white"
+                          }`}
+                        >
+                          {complaint.status}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">{complaint.submittedAt}</td>
+                      <td className="px-4 py-3">
+                        <button
+                          className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 mr-2"
+                          onClick={() =>
+                            handleViewDetails(complaint.complaintId)
+                          }
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )
         )}
         {/*List of all the room types added */}
         {!isCreateTab && (

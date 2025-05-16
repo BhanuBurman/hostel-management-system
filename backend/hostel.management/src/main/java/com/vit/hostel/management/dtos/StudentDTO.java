@@ -12,6 +12,7 @@ public class StudentDTO {
     private String password;
 
     private String regNumber;
+    private String roomNumber;
     private String studentEmail;
     private String studentPhone;
     private String studentAddress;
