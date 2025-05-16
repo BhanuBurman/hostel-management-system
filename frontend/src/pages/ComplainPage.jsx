@@ -43,7 +43,7 @@ const ComplainPage = () => {
 
   const fetchCompaints = () => {
     api
-      .get("http://localhost:8080/complain/get-all-complaints")
+      .get("/complain/get-all-complaints")
       .then((response) => {
         setComplaintList(response.data);
       })
@@ -60,7 +60,7 @@ const ComplainPage = () => {
     //   console.log(e);
     // }
     api
-      .get("http://localhost:8080/room-types/get-all-room-types")
+      .get("/room-types/get-all-room-types")
       .then((response) => {
         setAllRoomTypeList(response.data);
         if (roomObj !== -1) {

@@ -23,7 +23,7 @@ const ComplainDetailPage = () => {
     const fetchComplainDetails = async () => {
       try {
         const response = await api.get(
-          `http://localhost:8080/complain/get-complain-detailsById/${complaintId}`
+          `/complain/get-complain-detailsById/${complaintId}`
         );
         console.log(response);
         
@@ -47,7 +47,7 @@ const ComplainDetailPage = () => {
       status: status,
     };
     console.log(request);
-    api.put("http://localhost:8080/complain/update-complaint",request)
+    api.put("/complain/update-complaint",request)
     .then((response) =>{
       alert(response.data);
     }).catch((e)=> alert(e.message()));

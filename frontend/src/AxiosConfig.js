@@ -2,11 +2,12 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  // baseURL: process.env.REACT_APP_API_URL_PROD || "http://localhost:8080",
+  baseURL: "https://hostel-management-system-2bhd.onrender.com",
 });
 
 
-// ✅ Interceptor to dynamically attach token for every request
+// Interceptor to dynamically attach token for every request
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -18,7 +19,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// ✅ Interceptor for handling 401 errors globally
+// Interceptor for handling 401 errors globally
 api.interceptors.response.use(
   (response) => response,
   (error) => {

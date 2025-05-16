@@ -54,7 +54,7 @@ const Room = () => {
   const fetchRoomInfo = () => {
     api
       .get(
-        "http://localhost:8080/room/get-rooms-by-floor-number/" + floorNumber
+        "/room/get-rooms-by-floor-number/" + floorNumber
       )
       .then((response) => {
         setRoomsInfoList(response.data);
@@ -70,7 +70,7 @@ const Room = () => {
   const fetchTotalFloors = () => {
     console.log("Floor number : " + floorNumber);
     api
-      .get("http://localhost:8080/room/get-total-floors")
+      .get("/room/get-total-floors")
       .then((response) => {
         setTotalFloors(response.data);
       })

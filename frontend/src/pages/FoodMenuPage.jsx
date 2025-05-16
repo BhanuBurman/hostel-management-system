@@ -7,15 +7,17 @@ import api from "../AxiosConfig";
 const FoodMenuPage = () => {
 
   const [foodMenu, setFoodMenu] = useState();
+  const [isMenuLoading, setIsMenuLoading] = useState(true);
 
   useEffect(() => {
     fetchFoodMenu();
   }, []);
-
+  
   const fetchFoodMenu = () =>{
-    api.get("http://localhost:8080/food/get-food-menu")
+    api.get("/food/get-food-menu")
     .then((response) => {
       
+      setIsMenuLoading(false);
       setFoodMenu(response.data);
     }).catch((error) => {alert(error.message);});
   }
@@ -39,7 +41,11 @@ const FoodMenuPage = () => {
           </tr>
         </thead>
         <tbody>
-  {foodMenu && Object.entries(foodMenu).map(([day, meals], index) => (
+  {isMenuLoading? (
+    <tr>
+      <td colSpan="5" className="text-2xl p-3 border text-center text-white">Loading...</td>
+    </tr>
+  ): (foodMenu && Object.entries(foodMenu).map(([day, meals], index) => (
     <tr key={index} className="bg-white/80 hover:bg-white">
       <td className="p-3 border font-semibold">{day}</td>
       <td className="p-3 border">{meals.Breakfast || "-"}</td>
@@ -47,7 +53,7 @@ const FoodMenuPage = () => {
       <td className="p-3 border">{meals.Snacks || "-"}</td>
       <td className="p-3 border">{meals.Dinner || "-"}</td>
     </tr>
-  ))}
+  )))}
 </tbody>
       </table>
     </div>

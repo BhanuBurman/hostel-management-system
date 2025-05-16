@@ -42,7 +42,7 @@ const CreateRooms = (props) => {
   // Fetch room types
   const fetchRoomTypes = () => {
     api
-      .get("http://localhost:8080/room-types/get-all-room-types")
+      .get("/room-types/get-all-room-types")
       .then((response) => {
         setRoomTypeList(response.data);
         console.log(response.data);
@@ -85,7 +85,7 @@ const CreateRooms = (props) => {
 
   const uploadRoomList = (newRoomList) => {
     api
-     .post("http://localhost:8080/room/add-multiple-rooms-info", newRoomList)
+     .post("/room/add-multiple-rooms-info", newRoomList)
      .then((response) => {
         console.log(response.data);
         alert("Rooms uploaded successfully");
@@ -102,7 +102,7 @@ const CreateRooms = (props) => {
       className="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition-all duration-300 text-2xl"
       onClick={props.onClose}
     >
-      ×
+      X
     </button>
 
     {/* Heading */}

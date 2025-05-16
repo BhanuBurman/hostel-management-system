@@ -18,7 +18,7 @@ const RoomViewPage = () => {
     },[]);
     const fetchRoomTypeById = () =>{
         if(roomTypeId == -1) return;
-        api.get("http://localhost:8080/room-types/get-roomType-by-id/"+roomTypeId)
+        api.get("/room-types/get-roomType-by-id/"+roomTypeId)
         .then((response) => {
             console.log("Fetched Room Type Info:", response.data); 
             setRoomTypeInfo(response.data)})
@@ -33,7 +33,7 @@ const RoomViewPage = () => {
       }
       console.log("Room book request: ",request);
       
-      api.put("http://localhost:8080/room/book-room", request)
+      api.put("/room/book-room", request)
       .then((response)=>{
         alert(response.data);
       }).catch((err)=> alert(err.message()));

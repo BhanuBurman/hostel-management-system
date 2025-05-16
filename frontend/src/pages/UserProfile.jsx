@@ -16,7 +16,7 @@ const UserProfile = () => {
     if (userInfo !== null) {
       api
         .post(
-          "http://localhost:8080/auth/student-full-details",
+          "/auth/student-full-details",
           userInfo.regNumber,
           {
             headers: {

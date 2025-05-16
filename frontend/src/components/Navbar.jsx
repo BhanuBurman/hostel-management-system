@@ -31,7 +31,7 @@ const Navbar = () => {
   }, []);
 
   const fetchUserDetails = (token) =>{
-    axios.post("http://localhost:8080/auth/user-details"
+    api.post("/auth/user-details"
       ,token
     ).then((response) =>{
       setUserInfo(response.data);

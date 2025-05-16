@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import api from "../AxiosConfig";
 
 const Register = (props) => {
   const [formData, setFormData] = useState({
@@ -29,8 +30,8 @@ const Register = (props) => {
         admissionYear: formData.admissionYear.split("-")[0], // convert month to year
       };
 
-      const res = await axios.post(
-        "http://localhost:8080/auth/signup-student",
+      const res = await api.post(
+        "/auth/signup-student",
         payload
       );
       console.log("✅ Student registered:", res.data);

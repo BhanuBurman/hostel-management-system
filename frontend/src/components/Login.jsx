@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../AxiosConfig";
 // import { useNavigate } from "react-router-dom";
 
 const Login = (props) => {
@@ -21,9 +22,9 @@ const Login = (props) => {
     e.preventDefault();
 
   try {
-    console.log(formData);
+    // console.log(formData);
     
-    const response = await axios.post("http://localhost:8080/auth/login", formData);
+    const response = await api.post("/auth/login", formData);
     console.log(response);
     
     

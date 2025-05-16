@@ -54,7 +54,7 @@ const CreateRoomType = () => {
     //   console.log(e);
     // }
     api
-      .get("http://localhost:8080/room-types/get-all-room-types")
+      .get("/room-types/get-all-room-types")
       .then((response) => {
         setAllRoomTypeList(response.data);
         if (roomObj !== -1) {
@@ -82,7 +82,7 @@ const CreateRoomType = () => {
     };
   
     api
-      .post("http://localhost:8080/room-types/add-room-type", updatedRoomData, {
+      .post("/room-types/add-room-type", updatedRoomData, {
         headers: {
           "Content-Type": "application/json",
         },

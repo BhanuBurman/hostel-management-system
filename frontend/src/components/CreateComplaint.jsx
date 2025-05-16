@@ -16,12 +16,12 @@ const CreateComplaint = ({ onClose }) => {
 
   useEffect(() => {
     api
-      .get("http://localhost:8080/complain/get-all-complaint-categories")
+      .get("/complain/get-all-complaint-categories")
       .then((response) => setCategoryTypeList(response.data))
       .catch((err) => console.log(err));
 
     api
-      .get("http://localhost:8080/complain/get-all-complaint-subcategories")
+      .get("/complain/get-all-complaint-subcategories")
       .then((response) => setSubCategoryTypeList(response.data))
       .catch((err) => console.log(err));
   }, []);
@@ -39,7 +39,7 @@ const CreateComplaint = ({ onClose }) => {
     };
     console.log("complaintData : ", complaintData);
     api
-    .post("http://localhost:8080/complain/add-complaint", complaintData)
+    .post("/complain/add-complaint", complaintData)
     .then((response) => alert(response.data))
     .catch((err) => alert(err.message));
   }
