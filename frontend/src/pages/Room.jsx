@@ -158,7 +158,9 @@ const Room = () => {
         </div>
         <div className="floor_area w-full h-125 border-1 border-gray-200 flex flex-wrap gap-y-0 gap-5 p-5 mt-4 overflow-y-auto bg-gray-800">
           {isRoomFetching ? (
-            <Spinner />
+            <div className="w-full h-full flex justify-center items-center">
+              <Spinner size={10}/>
+            </div>
           ) : (
             roomsInfoList.map((item, index) => {
               return (

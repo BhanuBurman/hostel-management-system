@@ -3,6 +3,7 @@ import axios from "axios";
 import Room from "../assets/room_img.jpg";
 import { useLocation } from "react-router-dom";
 import api from "../AxiosConfig";
+import Spinner from "../components/Spinner";
 
 const CreateRoomType = () => {
   const location = useLocation();
@@ -14,6 +15,7 @@ const CreateRoomType = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [isImageUploading , setIsImageUploading] = useState(false);
+  const [isRoomTypeSubmitting, setIsRoomTypeSubmitting] = useState(false);
   const [allRoomTypeList, setAllRoomTypeList] = useState([
     // {
     //   id: 0,
@@ -45,14 +47,6 @@ const CreateRoomType = () => {
   }, []);
 
   const fetchRoomTypes = () => {
-    // try{
-    //   const response = await fetch("http://localhost:8080/api/get-all-room-types");
-    //   const json = await response.json();
-    //   console.log(json);
-    //   setAllRoomTypeList(json);
-    // }catch(e){
-    //   console.log(e);
-    // }
     api
       .get("/room-types/get-all-room-types")
       .then((response) => {
@@ -70,7 +64,7 @@ const CreateRoomType = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+    setIsRoomTypeSubmitting(true);
     if (imageFile === null || imageUrl.length == 0) {
       alert("Image uploading please wait...");
       return;
@@ -89,6 +83,7 @@ const CreateRoomType = () => {
       })
       .then((response) => {
         console.log(response);
+        setIsRoomTypeSubmitting(false);
         alert("Room Type Created Successfully");
       })
       .catch(function (error) {
@@ -108,27 +103,6 @@ const CreateRoomType = () => {
     setRoomData({ ...roomData, isAC: event.target.value === "true" });
   };
 
-  const uploadOnCloudinary = async (file) => {
-    const cloudName = "dv5lxe8m7";
-    const presetName = "meme-uploads";
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", presetName);
-  
-    try {
-      const response = await axios.post(
-        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-        formData
-      );
-      console.log("Uploaded Image URL:", response.data.secure_url);
-      setImageUrl(response.data.secure_url);
-      return response.data.secure_url; // important for chaining
-    } catch (err) {
-      console.error("Error in Image Upload", err);
-      throw err;
-    }
-  };
-
   const handleUpload = async (e) =>{
     const file = e.target.files[0];
     if(!file){
@@ -137,7 +111,7 @@ const CreateRoomType = () => {
     }
     setImageFile(file);
     setIsImageUploading(true);
-    const uploadImageURL = await uploadOnCloudinary(file);
+    const uploadImageURL = await Cloudinary(file);
     setIsImageUploading(false);
     setImageUrl(uploadImageURL);
   }
@@ -196,7 +170,7 @@ const CreateRoomType = () => {
                 </div>
               </div>
 
-              {/* ✅ Input Fields */}
+              {/* Input Fields */}
               {Object.entries(roomData)
                 .filter(([key]) => key !== "isAC" && key !== "image")
                 .map(([key, value]) => (
@@ -220,13 +194,18 @@ const CreateRoomType = () => {
 
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-700"
+                className="w-50 h-12 bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-700 cursor-pointer"
+                disabled={isRoomTypeSubmitting}
               >
-                Add Room Type
+                {isRoomTypeSubmitting ? (
+                    <Spinner size={5} border="border-3" color="border-blue-300" text="Adding..."/>
+                ):(
+                  "Add Room Type"
+                )}
               </button>
             </div>
 
-            {/* ✅ Image Upload Section */}
+            {/* Image Upload Section */}
             <div className="imageSection border-1 border-gray-300 shadow-lg h-140 w-110 flex flex-col items-center justify-center">
               {isImageUploading && <p>uploading...</p>}
               {imageUrl.length > 0 && (
@@ -266,7 +245,7 @@ const CreateRoomType = () => {
                   ) : (
                     <img
                       className="w-20 h-20 rounded-full object-cover"
-                      src={Room} // Your default imported image
+                      src={Room} 
                       alt="Default Room"
                     />
                   )}
@@ -285,7 +264,7 @@ const CreateRoomType = () => {
                               key !== "price" &&
                               key !== "image" &&
                               key !== "id"
-                          ) // Filter keys whose value is zero
+                          ) 
                           .map((key) => (
                             <div key={key} className="mr-1">
                               {key.replace("noOf", "")} : {item[key]},

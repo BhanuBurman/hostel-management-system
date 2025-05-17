@@ -2,9 +2,10 @@
 import axios from "axios";
 
 const api = axios.create({
-  // Vite expects variables to start with VITE_
+  // for production
   baseURL: import.meta.env.VITE_API_URL_PROD || "http://localhost:8080",
-  // baseURL: "https://hostel-management-system-2bhd.onrender.com",
+  // for development
+  // baseURL: import.meta.env.VITE_API_URL_DEV
 });
 
 
