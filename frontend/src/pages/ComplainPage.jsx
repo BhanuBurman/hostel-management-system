@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Room from "../assets/room_img.jpg";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import CreateComplaint from "../components/CreateComplaint";
-import { RiArrowDropDownLine } from "react-icons/ri";
 import api from "../AxiosConfig";
 import { useUser } from "../context/UserContext";
 import Spinner from "../components/Spinner";
+
 const ComplainPage = () => {
   const { user } = useUser();
   const location = useLocation();
   const roomObj = location.state?.roomsTypeId || -1;
 
-  // console.log(roomObj);
+  console.log(roomObj);
 
   const navigate = useNavigate();
-  const [status, setStatus] = useState("Pending");
   const [newComplaintClicked, setNewComplaintClicked] = useState(false);
   const [isCreateTab, setIsCreateTab] = useState(true);
 
@@ -23,7 +20,6 @@ const ComplainPage = () => {
   const [isLoadingComplaints, setIsLoadingComplaints] = useState(false);
 
   useEffect(() => {
-    fetchRoomTypes();
     fetchCompaints();
   }, []);
 
@@ -33,23 +29,9 @@ const ComplainPage = () => {
       .get("/complain/get-all-complaints")
       .then((response) => {
         setComplaintList(response.data);
+        console.log(response.data);
+        
         setIsLoadingComplaints(false);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const fetchRoomTypes = () => {
-    api
-      .get("/room-types/get-all-room-types")
-      .then((response) => {
-        setAllRoomTypeList(response.data);
-        if (roomObj !== -1) {
-          const foundRoom = response.data.find((item) => item.id === roomObj);
-          console.log(foundRoom);
-          if (foundRoom) {
-            setRoomData(foundRoom);
-          }
-        }
       })
       .catch((err) => console.log(err));
   };

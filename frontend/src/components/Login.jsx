@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../AxiosConfig";
-import Spinner from "./Spinner";
+import Spinner, { ButtonSpinner } from "./Spinner";
 // import { useNavigate } from "react-router-dom";
 
 const Login = (props) => {
@@ -103,7 +103,7 @@ const Login = (props) => {
             disabled={isUserLoggingIn}
           >
             {isUserLoggingIn ? (
-              <Spinner size={5} border="border-3" color="border-blue-400" text="Logging..."/>
+              <ButtonSpinner text={"Logging..."}/>
             ) : (
               <span>Log In</span>
             )}
