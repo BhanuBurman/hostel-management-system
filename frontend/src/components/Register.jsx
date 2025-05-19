@@ -64,7 +64,7 @@ const Register = (props) => {
             name="studentName"
             value={formData.studentName}
             onChange={handleChange}
-            placeholder="Full Name"
+            placeholder="Register Number"
             className="border text-gray-600 border-gray-300 p-3 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
@@ -121,15 +121,24 @@ const Register = (props) => {
             className="border text-gray-600 border-gray-300 p-3 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
-          <input
-            type="text"
-            name="studentBranch"
+
+          <select 
+            name="studentBranch" 
             value={formData.studentBranch}
             onChange={handleChange}
-            placeholder="Branch"
             className="border text-gray-600 border-gray-300 p-3 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
-          />
+            >
+            <option value="" disabled>Select Branch</option>
+            <option value="CSE">Computer Science and Engineering</option> 
+            <option value="IT">Information Technology</option>
+            <option value="ECE">Electronics and Communication Engineering</option>
+            <option value="EEE">Electrical and Electronics Engineering</option>
+            <option value="ME">Mechanical Engineering</option>
+            <option value="CE">Civil Engineering</option>
+            <option value="CHE">Chemical Engineering</option>
+            <option value="AE">Aeronautical Engineering</option>
+            </select>
 
           <div className="select_gender flex justify-between items-center col-span-1">
             <label className="text-black font-medium">Gender:</label>

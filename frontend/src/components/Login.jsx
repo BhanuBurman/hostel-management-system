@@ -74,7 +74,7 @@ const Login = (props) => {
             name="regNumber"
             value={formData.regNumber}
             onChange={handleChange}
-            placeholder="Full Name"
+            placeholder="Register Number"
             className="border text-gray-600 border-gray-300 p-3 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
