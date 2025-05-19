@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import api from "../AxiosConfig";
 import { ButtonSpinner } from "./Spinner";
 
@@ -12,8 +11,6 @@ const WardenRegistration = () => {
     phone: "",
     regNumber: "",
   });
-
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,7 +26,7 @@ const WardenRegistration = () => {
       setIsUserRegistering(false);
       console.log("Student registered:", res.data);
       alert("Registration successful!");
-        navigate("/");
+       window.location.href = "/";
     } catch (err) {
       console.error("Registration failed:", err);
       alert("Signup failed. Check logs.");

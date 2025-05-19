@@ -34,7 +34,7 @@ const StudentRegistration = () => {
       console.log("Student registered:", res.data);
       alert("Registration successful!");
         // Optionally, redirect or close the form
-        window.location.reload();
+        window.location.href = "/";
     } catch (err) {
       console.error("Registration failed:", err);
       alert("Signup failed. Check logs.");

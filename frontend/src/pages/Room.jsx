@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import CreateRooms from "../components/CreateRooms";
 import api from "../AxiosConfig";
 import { useUser } from "../context/UserContext";
@@ -11,6 +10,11 @@ import Spinner from "../components/Spinner";
 const Room = () => {
   const { user } = useUser();
 
+  if(user === null){
+    alert("Please login to view this page");
+    window.location.href = "/";
+    return;
+  }
   const floorNames = {
     0: "G",
     1: "A",

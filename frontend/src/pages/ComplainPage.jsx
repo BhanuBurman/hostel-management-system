@@ -7,6 +7,11 @@ import Spinner from "../components/Spinner";
 
 const ComplainPage = () => {
   const { user } = useUser();
+  if(user === null){
+    alert("Please login to view this page");
+    window.location.href = "/";
+    return;
+  }
   const location = useLocation();
   const roomObj = location.state?.roomsTypeId || -1;
 

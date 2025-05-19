@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
 import Room from "../assets/room_img.jpg";
 import { useLocation } from "react-router-dom";
 import api from "../AxiosConfig";
