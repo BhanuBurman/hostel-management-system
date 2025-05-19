@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import api from "../AxiosConfig";
+import { ButtonSpinner } from "./Spinner";
 
 const Register = (props) => {
+  const [isUserRegistering, setIsUserRegistering] = useState(true);
   const [formData, setFormData] = useState({
     studentName: "",
     password: "",
@@ -23,6 +24,7 @@ const Register = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsUserRegistering(true);
 
     try {
       const payload = {
@@ -30,15 +32,13 @@ const Register = (props) => {
         admissionYear: formData.admissionYear.split("-")[0], // convert month to year
       };
 
-      const res = await api.post(
-        "/auth/signup-student",
-        payload
-      );
-      console.log("✅ Student registered:", res.data);
+      const res = await api.post("/auth/signup-student", payload);
+      setIsUserRegistering(false);
+      console.log("Student registered:", res.data);
       alert("Registration successful!");
       props.onClose();
     } catch (err) {
-      console.error("❌ Registration failed:", err);
+      console.error("Registration failed:", err);
       alert("Signup failed. Check logs.");
     }
   };
@@ -131,7 +131,7 @@ const Register = (props) => {
             required
           />
 
-          <div className="select_gender flex justify-between items-center col-span-2">
+          <div className="select_gender flex justify-between items-center col-span-1">
             <label className="text-black font-medium">Gender:</label>
             <div className="flex gap-10">
               <label className="flex items-center">
@@ -181,13 +181,18 @@ const Register = (props) => {
               }
             )}
           </select>
-
-          <button
-            type="submit"
-            className="col-span-2 bg-blue-600 text-white p-3 w-full rounded-md text-lg font-semibold hover:bg-blue-700 transition-all duration-300"
-          >
-            Sign Up
-          </button>
+          <div className="col-span-2 flex justify-center items-center w-full">
+            <button
+              type="submit"
+              className="w-50   bg-blue-600 text-white p-3 rounded-md text-lg font-semibold hover:bg-blue-700 transition-all duration-300"
+            >
+              {isUserRegistering ? (
+                <ButtonSpinner text={"Registering..."} />
+              ) : (
+                "Register"
+              )}
+            </button>
+          </div>
         </form>
       </div>
     </div>
