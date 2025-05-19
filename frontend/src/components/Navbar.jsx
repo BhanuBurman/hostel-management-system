@@ -1,7 +1,7 @@
 import React, { useState , useEffect} from "react";
 import Logo from "../assets/react.svg";
 import { NavLink } from "react-router-dom";
-import Register from "./Register";
+import Register from "../pages/RegisterPage";
 import Login from "./Login";
 import { useNavigate } from "react-router-dom";
 import NavLogo from "../../public/hostel tab logo.png";
@@ -52,9 +52,6 @@ const Navbar = () => {
 
   return (
     <div className="nav__bar container flex  justify-between p-5 ">
-      {isRegisterClicked && (
-        <Register onClose={() => setIsRegisterClicked(false)} />
-      )}
       {isLoginClicked && <Login onClose={() => setIsLoginClicked(false)} />}
         <div className="w-20 h-8  overflow-hidden">
         <img src={NavLogo} alt="logo" className="relative -top-10 w-28 h-30 object-contain"/>
@@ -124,7 +121,10 @@ const Navbar = () => {
           </button>
           <button
             className="register bg-blue-600 p-1 px-5 rounded-md text-white hover:bg-blue-800 cursor-pointer"
-            onClick={() => setIsRegisterClicked(true)}
+            onClick={() => {
+              navigate("/register");
+              setIsRegisterClicked(true)
+            }}
             >
             Register
           </button>

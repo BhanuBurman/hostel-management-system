@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import hostelImg from "../assets/hostel-front-img.jpg";
-import Register from "../components/Register";
+import Register from "./RegisterPage";
 import AboutUs from "../components/AboutUs";
 import ContactUs from "../components/ContactUs";
 import Footer from "../components/Footer";

@@ -12,30 +12,37 @@ import FoodMenuPage from "./pages/FoodMenuPage";
 import RoomViewPage from "./pages/RoomViewPage";
 import UserProfile from "./pages/UserProfile";
 import { UserProvider } from "./context/UserContext";
+import Register from "./pages/RegisterPage";
 function App() {
-  
   return (
-    
     <BrowserRouter>
-    <UserProvider>
-      <Navbar/>
-      <Routes>
-        <Route path="/" element={<>
-        <Home />
-      <AboutUs />
-      <ContactUs />
-      <Footer />
-        </>
-      } />
-        <Route path="/create-room-type" element={<CreateRoomType />} />
-        <Route path="/rooms" element={<Room />} />
-        <Route path="/complain-page" element={<ComplainPage />} />
-        <Route path="/complain-detail-page" element={<ComplainDetailPage />} />
-        <Route path="/food-menu" element={<FoodMenuPage />} />
-        <Route path="/room-view" element={<RoomViewPage />} />
-        <Route path="/user-profile" element={<UserProfile />} />
-      </Routes>
-    </UserProvider>
+      <UserProvider>
+        <Navbar />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Home />
+                <AboutUs />
+                <ContactUs />
+                <Footer />
+              </>
+            }
+          />
+          <Route path="/create-room-type" element={<CreateRoomType />} />
+          <Route path="/rooms" element={<Room />} />
+          <Route path="/complain-page" element={<ComplainPage />} />
+          <Route
+            path="/complain-detail-page"
+            element={<ComplainDetailPage />}
+          />
+          <Route path="/food-menu" element={<FoodMenuPage />} />
+          <Route path="/room-view" element={<RoomViewPage />} />
+          <Route path="/user-profile" element={<UserProfile />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </UserProvider>
     </BrowserRouter>
   );
 }
