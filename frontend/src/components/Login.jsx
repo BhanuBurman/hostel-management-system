@@ -40,6 +40,7 @@ const Login = (props) => {
         console.error("No token received!");
       }
     } catch (error) {
+      setIsUserLoggingIn(false);
       console.error(
         "Login failed:",
         error.response?.data?.message || error.message

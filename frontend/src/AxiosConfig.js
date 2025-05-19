@@ -25,9 +25,14 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
+    // Only handle 401 globally if NOT the login endpoint
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      !error.config.url.includes("/auth/login")
+    ) {
       localStorage.removeItem("token");
-      alert("Login Failed! Please try again later.");
+      alert("You must be logged in before accessing this section");
       window.location.href = "/";
     }
     return Promise.reject(error);
