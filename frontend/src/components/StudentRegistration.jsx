@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const StudentRegistration = () => {
   const [isUserRegistering, setIsUserRegistering] = useState(false);
@@ -15,6 +16,7 @@ const StudentRegistration = () => {
     admissionYear: "",
   });
 
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -33,8 +35,8 @@ const StudentRegistration = () => {
       setIsUserRegistering(false);
       console.log("Student registered:", res.data);
       alert("Registration successful!");
-        // Optionally, redirect or close the form
-        window.location.href = "/";
+      navigate("/");
+      window.location.reload();
     } catch (err) {
       console.error("Registration failed:", err);
       alert("Signup failed. Check logs.");

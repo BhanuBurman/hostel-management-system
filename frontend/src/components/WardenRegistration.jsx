@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api from "../AxiosConfig";
 import { ButtonSpinner } from "./Spinner";
+import { useNavigate } from "react-router-dom";
 
 const WardenRegistration = () => {
   const [isUserRegistering, setIsUserRegistering] = useState(false);
@@ -11,6 +12,8 @@ const WardenRegistration = () => {
     phone: "",
     regNumber: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,7 +29,8 @@ const WardenRegistration = () => {
       setIsUserRegistering(false);
       console.log("Student registered:", res.data);
       alert("Registration successful!");
-       window.location.href = "/";
+      navigate("/");
+      window.location.reload();
     } catch (err) {
       console.error("Registration failed:", err);
       alert("Signup failed. Check logs.");
