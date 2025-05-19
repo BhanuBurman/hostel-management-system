@@ -1,6 +1,4 @@
 import { useState } from "react";
-import api from "../AxiosConfig";
-import { ButtonSpinner } from "../components/Spinner";
 import { BsRocketFill } from "react-icons/bs";
 import StudentRegistration from "../components/StudentRegistration";
 import WardenRegistration from "../components/WardenRegistration";
@@ -23,7 +21,7 @@ const RegisterPage = () => {
         <div className="font-semibold text-4xl my-7">Welcome</div>
         <span>No queues. No paperwork. Just smart hostel access.</span>
       </div>
-      <div className="signup_card shadow-xl w-300 px-35 py-8 bent-edge bg-gray-100 h-150">
+      <div className="signup_card shadow-xl w-300 px-35 py-8 bent-edge bg-gray-100 h-150 mr-10">
         <div className="swith_button col-span-1 w-full flex justify-end ">
             <div className="w-55 rounded-4xl bg-indigo-600 p-0.5 flex justify-between ">
               <button className={tabStyle("student")}  onClick={() => setActiveTab("student")}>Student</button>

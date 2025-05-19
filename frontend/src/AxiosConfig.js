@@ -27,7 +27,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       localStorage.removeItem("token");
-      alert("You must be logged in before accesing this section")
+      alert("Login Failed! Please try again later.");
       window.location.href = "/";
     }
     return Promise.reject(error);

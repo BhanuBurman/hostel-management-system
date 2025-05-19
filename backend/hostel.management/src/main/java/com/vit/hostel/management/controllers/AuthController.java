@@ -21,8 +21,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody AuthRequestDTO loginInfo){
-        return ResponseEntity.ok(authService.verify(loginInfo));
+    public ResponseEntity<?> loginUser(@RequestBody AuthRequestDTO loginInfo){
+        return authService.verify(loginInfo);
     }
 
     @PostMapping("/signup-student")

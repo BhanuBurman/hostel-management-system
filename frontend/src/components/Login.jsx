@@ -1,9 +1,7 @@
-import axios from "axios";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
+import { useState } from "react";
 import api from "../AxiosConfig";
-import Spinner, { ButtonSpinner } from "./Spinner";
-// import { useNavigate } from "react-router-dom";
+import { ButtonSpinner } from "./Spinner";
 
 const Login = (props) => {
   const [isUserLoggingIn, setIsUserLoggingIn] = useState(false);
@@ -26,22 +24,17 @@ const Login = (props) => {
     e.preventDefault();
 
     try {
-      // console.log(formData);
-
       const response = await api.post("/auth/login", formData);
       console.log(response);
-
-      const token = response.data; // Make sure backend returns token like this
+      const token = response.data; 
       setIsUserLoggingIn(false);
       if (token) {
-        localStorage.setItem("token", token); // Or sessionStorage.setItem()
+        localStorage.setItem("token", token); 
 
         console.log("Login successful! Token stored.");
 
-        // Optional: call props.onClose() or redirect
         props.onClose?.();
 
-        // If you have routing:
         window.location.reload();
       } else {
         console.error("No token received!");

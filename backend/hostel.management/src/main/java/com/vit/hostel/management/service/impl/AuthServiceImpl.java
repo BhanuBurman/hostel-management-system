@@ -14,8 +14,11 @@ import com.vit.hostel.management.service.AuthService;
 import com.vit.hostel.management.service.JwtService;
 import com.vit.hostel.management.service.RoleBasedAuthToken;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -62,16 +65,30 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String verify(AuthRequestDTO loginInfo) {
-        Authentication authentication = authenticationManager
-                .authenticate(new RoleBasedAuthToken(loginInfo.getRegNumber(),
-                        loginInfo.getPassword(),
-                        loginInfo.getRoleType()));
-        if (authentication.isAuthenticated()){
-            return jwtService.generateToken(loginInfo.getRegNumber(), loginInfo.getRoleType());
+    public ResponseEntity<?> verify(AuthRequestDTO loginInfo) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new RoleBasedAuthToken(
+                            loginInfo.getRegNumber(),
+                            loginInfo.getPassword(),
+                            loginInfo.getRoleType()
+                    )
+            );
+
+            if (authentication.isAuthenticated()) {
+                String token = jwtService.generateToken(loginInfo.getRegNumber(), loginInfo.getRoleType());
+                return ResponseEntity.ok(token); // return token in a DTO
+            }
+
+            // fallback — though typically unreachable
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
+        } catch (AuthenticationException ex) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid credentials or unauthorized access");
         }
-        return "fail";
     }
+
 
     @Override
     public UserCommonDetailsDTO getUserCommonDetails(String token) {
