@@ -3,7 +3,7 @@ import api from "../AxiosConfig";
 import { ButtonSpinner } from "./Spinner";
 
 const Register = (props) => {
-  const [isUserRegistering, setIsUserRegistering] = useState(true);
+  const [isUserRegistering, setIsUserRegistering] = useState(false);
   const [formData, setFormData] = useState({
     studentName: "",
     password: "",
