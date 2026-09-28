@@ -6,8 +6,10 @@ import { useUser } from "../context/UserContext";
 import Spinner from "../components/Spinner";
 
 const ComplainPage = () => {
+  const allComplaintsAPI = "/complain/get-all-complaints";
+  const complaintByRegNoAPI = "/complain/get-complaints-by-regno";
   const { user } = useUser();
-  if(user === null){
+  if (user === null) {
     alert("Please login to view this page");
     window.location.href = "/";
     return;
@@ -23,19 +25,20 @@ const ComplainPage = () => {
 
   const [complaintList, setComplaintList] = useState([]);
   const [isLoadingComplaints, setIsLoadingComplaints] = useState(false);
+  const [filterValue, setFilterValue] = useState("all");
 
   useEffect(() => {
     fetchCompaints();
-  }, []);
+  }, [filterValue]);
 
   const fetchCompaints = () => {
     setIsLoadingComplaints(true);
     api
-      .get("/complain/get-all-complaints")
+      .get(filterValue === "all" ? allComplaintsAPI : complaintByRegNoAPI)
       .then((response) => {
         setComplaintList(response.data);
         console.log(response.data);
-        
+
         setIsLoadingComplaints(false);
       })
       .catch((err) => console.log(err));
@@ -84,14 +87,28 @@ const ComplainPage = () => {
           </button>
         </div>
 
-        {user?.roleType.toLowerCase() === "student" && (
-          <button
-            className="complain_button p-1 text-md px-2 rounded-md transition-all hover:scale-105 bg-gray-700 text-white cursor-pointer hover:bg-black"
-            onClick={() => setNewComplaintClicked(true)}
-          >
-            New Complain
-          </button>
-        )}
+        <div className="flex items-center">
+          {user?.roleType.toLowerCase() === "student" && (
+            <>
+              <div className="filter_button border-2 rounded-full border-gray-300 p-1  bg-white focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
+                <select
+                  value={filterValue}
+                  className="outline-none bg-white text-gray-600 px-3"
+                  onChange={(e) => setFilterValue(e.target.value)}
+                >
+                  <option value="all">All</option>
+                  <option value="myComplaints">My Complaints</option>
+                </select>
+              </div>
+              <button
+                className="complain_button p-1 text-md px-2 rounded-md transition-all hover:scale-105 bg-gray-700 text-white cursor-pointer hover:bg-black ml-5"
+                onClick={() => setNewComplaintClicked(true)}
+              >
+                New Complain
+              </button>
+            </>
+          )}
+        </div>
       </div>
       <div className="room__info w-full shadow-2xl p-5 bg-white rounded-br-lg rounded-bl-lg">
         {/* Create room Type  */}
@@ -104,6 +121,7 @@ const ComplainPage = () => {
                 <thead className="bg-gray-200">
                   <tr>
                     <th className="px-4 py-3 text-left">ID</th>
+                    <th className="px-4 py-3 text-left">Reg No</th>
                     <th className="px-4 py-3 text-left">Category</th>
                     <th className="px-4 py-3 text-left">Subcategory</th>
                     <th className="px-4 py-3 text-left">Status</th>
@@ -124,8 +142,13 @@ const ComplainPage = () => {
                         className="border-t border-gray-200"
                       >
                         <td className="px-4 py-3">{complaint.complaintId}</td>
+                        <td className="px-4 py-3">
+                          {complaint.studentRegNumber}
+                        </td>
                         <td className="px-4 py-3">{complaint.categoryName}</td>
-                        <td className="px-4 py-3">{complaint.subcategoryName}</td>
+                        <td className="px-4 py-3">
+                          {complaint.subcategoryName}
+                        </td>
                         <td className="px-4 py-3 flex">
                           <div
                             className={`px-4 py-1 text-sm font-semibold rounded flex  ${
@@ -143,7 +166,9 @@ const ComplainPage = () => {
                         <td className="px-4 py-3">
                           <button
                             className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 mr-2"
-                            onClick={() => handleViewDetails(complaint.complaintId)}
+                            onClick={() =>
+                              handleViewDetails(complaint.complaintId)
+                            }
                           >
                             View
                           </button>
@@ -163,7 +188,8 @@ const ComplainPage = () => {
             </h2>
             {complaintList.filter(
               (complaint) =>
-                complaint.status === "Resolved" || complaint.status === "Completed"
+                complaint.status === "Resolved" ||
+                complaint.status === "Completed"
             ).length === 0 ? (
               <p className="text-white">
                 No resolved or completed complaints found.
@@ -173,7 +199,8 @@ const ComplainPage = () => {
                 {complaintList
                   .filter(
                     (complaint) =>
-                      complaint.status === "Resolved" || complaint.status === "Completed"
+                      complaint.status === "Resolved" ||
+                      complaint.status === "Completed"
                   )
                   .map((complaint) => (
                     <li
@@ -197,7 +224,9 @@ const ComplainPage = () => {
                         </span>
                         <button
                           className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                          onClick={() => handleViewDetails(complaint.complaintId)}
+                          onClick={() =>
+                            handleViewDetails(complaint.complaintId)
+                          }
                         >
                           View Details
                         </button>

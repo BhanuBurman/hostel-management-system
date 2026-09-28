@@ -3,9 +3,9 @@ import axios from "axios";
 
 const api = axios.create({
   // for production
-  baseURL: import.meta.env.VITE_API_URL_PROD || "http://localhost:8080",
+  // baseURL: import.meta.env.VITE_API_URL_PROD || "http://localhost:8080",
   // for development
-  // baseURL: import.meta.env.VITE_API_URL_DEV
+  baseURL: import.meta.env.VITE_API_URL_DEV
 });
 
 

@@ -45,7 +45,7 @@ const Login = (props) => {
         "Login failed:",
         error.response?.data?.message || error.message
       );
-      alert("Invalid credentials or something went wrong!");
+      alert("Invalid credentials, Please try again.");
     }
   };
 
