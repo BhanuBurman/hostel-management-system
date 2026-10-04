@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../AxiosConfig";
+import { ButtonSpinner } from "./Spinner";
 
 const StudentRegistration = () => {
   const [isUserRegistering, setIsUserRegistering] = useState(false);
